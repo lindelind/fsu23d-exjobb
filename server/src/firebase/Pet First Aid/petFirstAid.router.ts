@@ -8,4 +8,4 @@ const router = express.Router();
 router.get("/pet-first-aid", getPetFirstAid);
 
 
-module.exports = router;
+export default router;
