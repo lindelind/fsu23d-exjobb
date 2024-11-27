@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-const petFirstAidRoutes = require("./firebase/Pet First Aid/petFirstAid.router")
+import petFirstAidRouter from "./firebase/Pet First Aid/petFirstAid.router"
+import placesRouter from "./google/google.router"
 
 const app = express();
 app.use(express.json());
@@ -13,7 +14,8 @@ app.use(
   })
 );
 
-app.use("/api", petFirstAidRoutes);
+app.use("/api", petFirstAidRouter);
+app.use("/api", placesRouter);
 const port = 3000;
 
 

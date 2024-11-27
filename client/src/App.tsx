@@ -1,29 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { Layout, Menu } from "antd";
-import "./App.css"; 
+import React, { useState } from "react";
+import { Layout, Menu, Button } from "antd";
+import "./App.css";
 import axios from "axios";
 
 const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => {
-
   const [petFirstAid, setPetFirstAid] = useState<any>([]);
+  const [places, setPlaces] = useState<any>([]);
 
-   useEffect(() => {
-     const fetchData = async () => {
-       try {
-         const response = await axios.get(
-           "http://localhost:3000/api/pet-first-aid"
-         ); 
-         setPetFirstAid(response.data);
-       } catch (error) {
-         console.error("Error fetching data:", error);
-       }
-     };
+  const fetchPetFirstAid = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/pet-first-aid"
+      );
+      setPetFirstAid(response.data);
+    } catch (error) {
+      console.error("Error fetching Pet First Aid data:", error);
+    }
+  };
 
-     fetchData();
-   }, []);
   
+  const fetchPlaces = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/places", {
+        params: { query: "Veterinärklinik" },
+      });
+      setPlaces(response.data.results);
+    } catch (error) {
+      console.error("Error fetching Places data:", error);
+    }
+  };
+
   return (
     <Layout>
       <Header className="app-header">
@@ -42,6 +50,9 @@ const App: React.FC = () => {
       </Header>
       <Content className="app-content">
         <div className="content-area">
+          <Button type="primary" onClick={fetchPetFirstAid}>
+            Hämta Pet First Aid
+          </Button>
           <ul>
             {petFirstAid.map((doc: any) => (
               <li key={doc.id}>
@@ -49,6 +60,18 @@ const App: React.FC = () => {
               </li>
             ))}
           </ul>
+
+          <Button type="primary" onClick={fetchPlaces}>
+            Hämta Places
+          </Button>
+          <div>
+            <h1>Places</h1>
+            <ul>
+              {places.map((place: any) => (
+                <li key={place.place_id}>{place.name}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Content>
       <Footer className="app-footer">
