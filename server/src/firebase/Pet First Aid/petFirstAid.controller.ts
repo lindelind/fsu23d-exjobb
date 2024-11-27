@@ -1,5 +1,5 @@
-import { Request, Response } from "express"; // Se till att dessa är installerade
-import db from "../firebase"; // Importera Firestore
+import { Request, Response } from "express";
+import {db} from "../firebase";
 
 const getPetFirstAid = async (req: Request, res: Response) => {
   try {
