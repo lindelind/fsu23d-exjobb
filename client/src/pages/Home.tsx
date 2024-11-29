@@ -1,6 +1,9 @@
 import { Button } from "antd";
 import axios from "axios";
 import { useState } from "react";
+import { RegisterModal } from "../components/RegisterModal";
+import {LoginModal} from "../components/LoginModal";
+
 
 export const Home = () => {
   const [petFirstAid, setPetFirstAid] = useState<any>([]);
@@ -30,6 +33,8 @@ export const Home = () => {
 
   return (
     <>
+      <RegisterModal />
+      <LoginModal/>
       <Button type="primary" onClick={fetchPetFirstAid}>
         Hämta Pet First Aid
       </Button>
