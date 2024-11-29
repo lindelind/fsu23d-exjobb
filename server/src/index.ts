@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import petFirstAidRouter from "./firebase/Pet First Aid/petFirstAid.router"
 import placesRouter from "./google/google.router"
+import usersRouter from "./firebase/Users/users.router";
 
 const app = express();
 app.use(express.json());
@@ -16,9 +17,10 @@ app.use(
 
 app.use("/api", petFirstAidRouter);
 app.use("/api", placesRouter);
+app.use("/api", usersRouter);
+
+
 const port = 3000;
-
-
 app.listen(port, () => {
-  console.log("Server is running!");
+  console.log(`Server is running on port ${port}`);
 });
