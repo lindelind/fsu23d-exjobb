@@ -6,7 +6,11 @@ import axios from "axios";
 export const LoginModal = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  
+  const [userData, setUserData] = useState<{
+    name: string;
+    email: string;
+  } | null>(null);
+
   const showModal = () => {
     setOpen(true);
   };
@@ -29,7 +33,7 @@ export const LoginModal = () => {
       });
 
       console.log("User data from backend:", response.data);
-   
+      setUserData(response.data); 
 
       setOpen(false);
     } catch (error: any) {
@@ -46,7 +50,11 @@ export const LoginModal = () => {
 
   return (
     <>
-    
+      {userData ? (
+        <h3>Inloggad som: {userData.name}</h3>
+      ) : (
+        <h3>Inte inloggad</h3>
+      )}
 
       <Button type="primary" onClick={showModal}>
         Login
