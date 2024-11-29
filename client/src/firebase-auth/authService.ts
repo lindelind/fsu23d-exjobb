@@ -51,3 +51,18 @@ export const loginUser = async (
     throw error;
   }
 };
+
+import { getAuth } from "firebase/auth";
+
+export const fetchIdToken = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) {
+    console.error("No user is logged in");
+    return null;
+  }
+
+  const idToken = await user.getIdToken();
+  return idToken;
+};
