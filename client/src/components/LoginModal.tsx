@@ -1,40 +1,21 @@
 import { useState } from "react";
 import { Button, Modal, Input, Form, message } from "antd";
-import { loginUser, fetchIdToken } from "../firebase-auth/authService";
-import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 
 export const LoginModal = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [userData, setUserData] = useState<{
-    name: string;
-    email: string;
-  } | null>(null);
+  const { login } = useAuth();
 
   const showModal = () => {
     setOpen(true);
   };
 
-  const handleOk = async (values: { email: string; password: string}) => {
+  const handleOk = async (values: { email: string; password: string }) => {
     setConfirmLoading(true);
     try {
-      
-      await loginUser(values.email, values.password);
-      message.success("Login successful!");
-
-      
-      const idToken = await fetchIdToken();
-      console.log("ID Token fetched:", idToken);
-
-      const response = await axios.get("http://localhost:3000/api/user-data", {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      });
-
-      console.log("User data from backend:", response.data);
-      setUserData(response.data); 
-
+      await login(values.email, values.password);
+      message.success("Du är nu inloggad!");
       setOpen(false);
     } catch (error: any) {
       console.error("Login failed:", error);
@@ -50,12 +31,6 @@ export const LoginModal = () => {
 
   return (
     <>
-      {userData ? (
-        <h3>Inloggad som: {userData.name}</h3>
-      ) : (
-        <h3>Inte inloggad</h3>
-      )}
-
       <Button type="primary" onClick={showModal}>
         Login
       </Button>
