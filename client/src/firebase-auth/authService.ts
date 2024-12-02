@@ -1,6 +1,8 @@
 import {
   createUserWithEmailAndPassword,
+  getAuth,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import axios from "axios";
 import { auth } from "../firebaseConfig";
@@ -33,9 +35,7 @@ export const registerUser = async (
 
 
 export const loginUser = async (
-  email: string, 
-  password: string
-) => {
+email: string, password: string) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -52,8 +52,6 @@ export const loginUser = async (
   }
 };
 
-import { getAuth } from "firebase/auth";
-
 export const fetchIdToken = async () => {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -65,4 +63,14 @@ export const fetchIdToken = async () => {
 
   const idToken = await user.getIdToken();
   return idToken;
+};
+
+export const logoutUser = async () => {
+  try {
+    await signOut(auth); // Loggar ut från Firebase Authentication
+    console.log("Successfully logged out from Firebase");
+  } catch (error) {
+    console.error("Error logging out from Firebase:", error);
+    throw error;
+  }
 };
