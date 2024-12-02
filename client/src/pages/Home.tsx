@@ -1,10 +1,16 @@
 import { Button } from "antd";
 import axios from "axios";
 import { useState } from "react";
+import { RegisterModal } from "../components/RegisterModal";
+import {LoginModal} from "../components/LoginModal";
+import { LogoutButton } from "../components/LogoutButton";
+import { useAuth } from "../contexts/AuthContext";
+
 
 export const Home = () => {
   const [petFirstAid, setPetFirstAid] = useState<any>([]);
   const [places, setPlaces] = useState<any>([]);
+  const {user} = useAuth();
 
   const fetchPetFirstAid = async () => {
     try {
@@ -30,7 +36,19 @@ export const Home = () => {
 
   return (
     <>
-      <Button type="primary" onClick={fetchPetFirstAid}>
+      {!user && (
+        <>
+          <h3>Ej inloggad</h3>
+          <RegisterModal />
+          <LoginModal />
+        </>
+      )}
+      {user && (
+        <>
+        <LogoutButton />
+      <h3>Inloggad som: {user.name}</h3>
+      </>)}
+      {/* <Button type="primary" onClick={fetchPetFirstAid}>
         Hämta Pet First Aid
       </Button>
       <ul>
@@ -51,7 +69,7 @@ export const Home = () => {
             <li key={place.place_id}>{place.name}</li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </>
   );
 };
