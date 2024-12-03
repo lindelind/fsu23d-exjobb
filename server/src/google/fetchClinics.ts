@@ -1,0 +1,163 @@
+require("dotenv").config();
+const axios = require("axios");
+const fs = require("fs");
+import { Clinic, Coordinates, FormattedAddress, PlaceDetails } from "../types/types";
+import { locations } from "./locations";
+
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+
+const fetchVeterinaryClinicsByCity = async (
+  location: Coordinates,
+  cityName: string
+): Promise<Clinic[]> => {
+  try {
+    console.log(`Hämtar kliniker för: ${cityName}`);
+    const allClinics = new Map(); 
+
+    let nextPageToken = null;
+
+    do {
+      const nearbySearchUrl: any = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=50000&type=veterinary_care&key=${GOOGLE_API_KEY}${
+        nextPageToken ? `&pagetoken=${nextPageToken}` : ""
+      }`;
+
+      const nearbyResponse = await axios.get(nearbySearchUrl);
+
+      if (
+        nearbyResponse.data.status !== "OK" &&
+        nearbyResponse.data.status !== "ZERO_RESULTS"
+      ) {
+        console.error(
+          `Fel vid hämtning för ${cityName}:`,
+          nearbyResponse.data.status
+        );
+        break;
+      }
+
+      const places = nearbyResponse.data.results;
+      console.log(`Hämtade ${places.length} kliniker på denna sida.`);
+
+      for (const place of places) {
+        if (!allClinics.has(place.place_id)) {
+          const placeDetailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id&key=${GOOGLE_API_KEY}`;
+          const detailsResponse = await axios.get(placeDetailsUrl);
+
+          if (detailsResponse.data.status !== "OK") {
+            console.warn(
+              `Fel vid hämtning av detaljer för ${place.place_id}:`,
+              detailsResponse.data.status
+            );
+            continue;
+          }
+
+          const details: PlaceDetails = detailsResponse.data.result;
+
+          if (!details) continue;
+
+          const addressComponents = details.address_components || [];
+          const formattedAddress: FormattedAddress = {
+            streetAddress: (() => {
+              const route =
+                addressComponents.find((component) =>
+                  component.types.includes("route")
+                )?.long_name || null;
+              const streetNumber =
+                addressComponents.find((component) =>
+                  component.types.includes("street_number")
+                )?.long_name || null;
+              return route && streetNumber
+                ? `${route} ${streetNumber}`
+                : route || null;
+            })(),
+            zip:
+              addressComponents.find((component) =>
+                component.types.includes("postal_code")
+              )?.long_name || null,
+            city:
+              addressComponents.find((component) =>
+                component.types.includes("postal_town")
+              )?.long_name || null,
+            län:
+              addressComponents.find((component) =>
+                component.types.includes("administrative_area_level_1")
+              )?.long_name || null,
+            country:
+              addressComponents.find((component) =>
+                component.types.includes("country")
+              )?.long_name || null,
+          };
+
+          allClinics.set(place.place_id, {
+            id: details.place_id,
+            name: details.name,
+            address: formattedAddress,
+            coordinates: details.geometry?.location
+              ? {
+                  lat: details.geometry.location.lat,
+                  long: details.geometry.location.lng,
+                }
+              : { lat: null, long: null },
+            formatted_address: details.formatted_address,
+            phone_number: details.international_phone_number || null,
+            website: details.website || null,
+            openinghours: details.opening_hours?.weekday_text || null,
+          });
+        }
+      }
+
+      nextPageToken = nearbyResponse.data.next_page_token || null;
+
+      if (nextPageToken) {
+        console.log(`next_page_token finns: ${nextPageToken}`);
+        await new Promise((r) => setTimeout(r, 2000));
+      } else {
+        console.log("Ingen nästa sida.");
+      }
+    } while (nextPageToken);
+
+    return Array.from(allClinics.values());
+  } catch (error: any) {
+    console.error(`Fel vid hämtning för ${cityName}:`, error.message);
+    return [];
+  }
+};
+
+
+// //Ny hämtning av alla kliniker till en ny json-fil med datum
+
+const generateNewClinicsFile = async (locations:any) => {
+  const timestamp = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  const fileName = `clinics_${timestamp}.json`;
+
+  const allClinics = new Map();
+
+  for (const location of locations) {
+    console.log(`Hämtar för plats: ${location.city}`);
+    const newClinics = await fetchVeterinaryClinicsByCity(
+      { lat: location.lat, lng: location.lng },
+      location.city
+    );
+
+    newClinics.forEach((clinic) => {
+      if (!allClinics.has(clinic.id)) {
+        allClinics.set(clinic.id, clinic);
+      }
+    });
+  }
+
+  const clinicArray = Array.from(allClinics.values());
+  fs.writeFileSync(fileName, JSON.stringify(clinicArray, null, 2));
+  console.log(
+    `Hämtningen är klar. Totalt antal kliniker: ${clinicArray.length}. Fil sparad som ${fileName}`
+  );
+
+  return fileName;
+};
+
+
+(async () => {
+  await generateNewClinicsFile(locations);
+})();
+
+
+
