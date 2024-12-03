@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser"; 
 import petFirstAidRouter from "./firebase/Pet First Aid/petFirstAid.router"
-import placesRouter from "./google/google.router"
 import usersRouter from "./firebase/Users/users.router";
 
 const app = express();
@@ -18,7 +17,6 @@ app.use(
 );
 
 app.use("/api", petFirstAidRouter);
-app.use("/api", placesRouter);
 app.use("/api", usersRouter);
 
 
