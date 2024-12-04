@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
 
-interface Clinic {
+export interface Clinic {
   id: string;
   name: string;
   address: {
