@@ -1,9 +1,11 @@
 
 import { List } from "antd";
 import { useClinics } from "../contexts/ClinicsContext";
+import { useNavigate } from "react-router-dom";
 
 export const ClinicList = () => {
   const { clinics } = useClinics();
+    const navigate = useNavigate();
 
   return (
     <List
@@ -11,7 +13,11 @@ export const ClinicList = () => {
       size="small"
       dataSource={clinics}
       renderItem={(clinic) => (
-        <List.Item key={clinic.id}>
+        <List.Item
+          key={clinic.id}
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/vet-clinic/" + clinic.id)}
+        >
           <div>
             <h3>{clinic.name}</h3>
             <p>
