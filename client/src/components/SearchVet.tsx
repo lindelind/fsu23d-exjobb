@@ -19,6 +19,12 @@ const onSearch = (value: string) => {
   }
 };
 
+const getLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+     console.log(position.coords.latitude, position.coords.longitude);
+    });
+}
+
 return (
 <>
 <Input.Search
@@ -35,7 +41,7 @@ return (
   suffix={
     <EnvironmentOutlined
       style={{ cursor: "pointer" }}
-      // onClick={getLocation} TODO: Skapa funktion för att hämta användarens location och hämta närmsta kliniker baserat på det
+      onClick={getLocation} //TODO: Skapa funktion för att hämta användarens location och hämta närmsta kliniker baserat på det
     />
   }
   onSearch={onSearch}
