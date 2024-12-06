@@ -1,5 +1,5 @@
 import { SearchOutlined, EnvironmentOutlined } from "@ant-design/icons";
-import { Input, Select } from "antd";
+import { Input, message, Select } from "antd";
 import { useState } from "react";
 import { useClinics } from "../contexts/ClinicsContext";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export const SearchVet = () => {
 
 const { Option } = Select;
-const {fetchByCity } = useClinics();
+const {fetchByCity, fetchByLocation } = useClinics();
 const [searchType, setSearchType] = useState("city");
  const navigate = useNavigate();
 
@@ -19,11 +19,26 @@ const onSearch = (value: string) => {
   }
 };
 
-const getLocation = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-     console.log(position.coords.latitude, position.coords.longitude);
-    });
-}
+const getUserLocation = () => {
+  if (!navigator.geolocation) {
+    message.error("Platsinfo är inte tillgängligt");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const long = position.coords.longitude;
+      console.log("User location:", { lat, long });
+      fetchByLocation(lat, long);
+      navigate("/find-vet-clinic/");
+    },
+    (error) => {
+      message.error("Kunde inte hämta plats. Kontrollera dina inställningar.");
+      console.error("Geolocation error:", error);
+    }
+  );
+};
 
 return (
 <>
@@ -41,7 +56,7 @@ return (
   suffix={
     <EnvironmentOutlined
       style={{ cursor: "pointer" }}
-      onClick={getLocation} //TODO: Skapa funktion för att hämta användarens location och hämta närmsta kliniker baserat på det
+      onClick={getUserLocation} //TODO: Skapa funktion för att hämta användarens location och hämta närmsta kliniker baserat på det
     />
   }
   onSearch={onSearch}

@@ -25,6 +25,7 @@ interface ClinicsContextProps {
   clinic: Clinic | null;
   loading: boolean;
   fetchByCity: (city?: string) => Promise<void>;
+  fetchByLocation: (lat: number, long: number) => Promise<void>;
   fetchById: (id: string) => Promise<void>;
 }
 
@@ -59,6 +60,20 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
 
+  const fetchByLocation = async (lat: number, long: number) => {
+  try {
+    console.log("Fetching by location:", { lat, long });
+    const response = await axios.get(
+      `http://localhost:3000/api/vet-clinics-location?lat=${lat}&long=${long}`
+    );
+    console.log("Response data:", response.data);
+
+    const data = response.data;
+    setClinics(data.data);
+  } catch (error) {
+    console.error("Error fetching clinics by coordinates:", error);
+  }
+};
 
 const fetchById = useCallback(async (id: string) => {
   setLoading(true);
@@ -84,6 +99,7 @@ const fetchById = useCallback(async (id: string) => {
         clinic,
         loading,
         fetchByCity,
+        fetchByLocation,
         fetchById
       }}
     >
