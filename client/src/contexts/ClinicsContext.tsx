@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 export interface Clinic {
   id: string;
@@ -22,8 +22,10 @@ export interface Clinic {
 
 interface ClinicsContextProps {
   clinics: Clinic[];
+  clinic: Clinic | null;
   loading: boolean;
   fetchByCity: (city?: string) => Promise<void>;
+  fetchById: (id: string) => Promise<void>;
 }
 
 const ClinicsContext = createContext<ClinicsContextProps | undefined>(
@@ -35,6 +37,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [clinics, setClinics] = useState<Clinic[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [clinic, setClinic] = useState<Clinic | null>(null);
 
   const fetchByCity = async (city = "") => {
     setLoading(true);
@@ -55,12 +58,33 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+
+
+const fetchById = useCallback(async (id: string) => {
+  setLoading(true);
+  try {
+    const response = await axios.get<{ success: boolean; data: Clinic[] }>(
+      `http://localhost:3000/api/vet-clinics/${id}`
+    );
+    setClinic(response.data.data[0] || null);
+  } catch (error) {
+    console.error("Error fetching clinic by ID:", error);
+    setClinic(null);
+  } finally {
+    setLoading(false);
+  }
+}, []);
+
+
+
   return (
     <ClinicsContext.Provider
       value={{
         clinics,
+        clinic,
         loading,
         fetchByCity,
+        fetchById
       }}
     >
       {children}
