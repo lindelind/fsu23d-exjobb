@@ -55,5 +55,25 @@ const getVetClinicsById = async (req:Request, res: Response) => {
   };
 
 
-export { getVetClinicsByCity, getVetClinicsById };
+ const getVetClinicsByLocation = async (
+   req: Request,
+   res: Response
+ ) => {
+   try {
+     const { lat, long } = req.query;
+     console.log(lat, long)
+
+     
+     res.status(200).json({ success: true });
+   } catch (error: any) {
+     console.error("Error fetching vet clinics by location:", error.message);
+     res
+       .status(500)
+       .json({ error: "Internal server error", details: error.message });
+   }
+ };
+
+
+
+export { getVetClinicsByCity, getVetClinicsById , getVetClinicsByLocation};
 
