@@ -1,5 +1,6 @@
 
 export type Clinic = {
+  distance: number;
   id: string;
   name: string;
   address: FormattedAddress;

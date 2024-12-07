@@ -119,7 +119,7 @@ const getVetClinicsById = async (req:Request, res: Response) => {
        .sort((a: Clinic, b: Clinic) => a.distance - b.distance)
        .slice(0, 5);
 
-     res.status(200).json({ success: true, clinics: results });
+     res.status(200).json({ success: true, data: results });
    } catch (error: any) {
      console.error("Error fetching vet clinics by location:", error.message);
      res

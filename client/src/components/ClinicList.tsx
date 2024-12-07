@@ -47,6 +47,8 @@ export const ClinicList = () => {
                 "Finns ej"
               )}
             </p>
+            {clinic.distance && (
+            <p>Avstånd: {clinic.distance} km</p>)}
           </div>
         </List.Item>
       )}

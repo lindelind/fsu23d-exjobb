@@ -10,6 +10,7 @@ export interface Clinic {
     zip: string;
     country: string;
   };
+  distance?: string;
   formatted_address: string;
   phone_number: string | null;
   website: string | null;
