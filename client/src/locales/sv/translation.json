@@ -1,0 +1,14 @@
+
+{
+  "open_24_hours": "Öppet dygnet runt",
+  "clinic_address": "Adress",
+  "clinic_phone": "Telefon",
+  "clinic_phone_null": "Ej tillgängligt",
+  "clinic_website": "Hemsida",
+  "distance": "Avstånd",
+  "logout": "Logga ut",
+  "login": "Logga in",
+  "register": "Skapa konto",
+  "city": "Stad",
+  "city_search": "Sök stad"
+}

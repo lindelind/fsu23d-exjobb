@@ -1,0 +1,13 @@
+
+{
+  "clinic_address": "Address",
+  "clinic_phone": "Phone",
+  "clinic_phone_null": "Not available",
+  "clinic_website": "Website",
+  "distance": "Distance",
+  "logout": "Logout",
+  "login": "Login",
+  "register": "Sign up",
+  "city": "City",
+  "city_search": "Search city"
+}
