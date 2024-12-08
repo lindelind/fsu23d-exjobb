@@ -1,33 +1,50 @@
 import { Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { ChangeLanguage } from "./ChangeLanguage";
+import "../css/layout.css"
+import { useEffect, useState } from "react";
+
 
 export const Navigation = () => {
+  const location = useLocation();
+    const [selectedKey, setSelectedKey] = useState(location.pathname);
 
-    return (
-        <Menu
+  useEffect(() => {
+    setSelectedKey(location.pathname);
+  }, [location]);
+
+
+  return (
+    <>
+      <Menu
         role="menu"
         theme="dark"
         mode="horizontal"
-        defaultSelectedKeys={["1"]}
+        selectedKeys={[selectedKey]}
         items={[
-            {
-            key: "1",
+          {
+            key: "/",
             label: <Link to="/">Startsida</Link>,
-            },
-            {
-            key: "2",
+          },
+          {
+            key: "/find-vet-clinic",
             label: <Link to="/find-vet-clinic">Hitta Veterinär</Link>,
-            },
-            {
-            key: "3",
+          },
+          {
+            key: "/profile",
             label: <Link to="/profile">Profil</Link>,
-            },
-            {
-            key: "4",
+          },
+          {
+            key: "/pet-first-aid",
             label: <Link to="/pet-first-aid">Pet First Aid</Link>,
-            },
+          },
+          {
+            key: "/change-language",
+            label: <ChangeLanguage />,
+          },
         ]}
         className="app-menu"
-        />
-    );
+      />
+    </>
+  );
 }
