@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Button, Modal, Input, Form, message } from "antd";
 import { registerUser } from "../firebase-auth/authService";
+import { useTranslation } from "react-i18next";
 
 export const RegisterModal = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+   const { t } = useTranslation();
 
   const showModal = () => {
     setOpen(true);
@@ -43,7 +45,7 @@ export const RegisterModal = () => {
   return (
     <>
       <Button type="default" onClick={showModal}>
-        Register
+        {t("register")}
       </Button>
       <Modal
         title="Register"

@@ -2,10 +2,12 @@
 import { List } from "antd";
 import { useClinics } from "../contexts/ClinicsContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const ClinicList = () => {
   const { clinics } = useClinics();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
   return (
     <List
@@ -21,7 +23,7 @@ export const ClinicList = () => {
           <div>
             <h3>{clinic.name}</h3>
             <p>
-              Adress:{" "}
+              <strong>{t("clinic_address")}:</strong>{" "}
               <a
                 href={`https://www.google.com/maps?q=${clinic.coordinates.lat},${clinic.coordinates.long}`}
                 target="_blank"
@@ -30,7 +32,7 @@ export const ClinicList = () => {
               </a>
             </p>
             <p>
-              Telefon:{" "}
+              <strong>{t("clinic_phone")}:</strong>{" "}
               {clinic.phone_number ? (
                 <a href={`tel:${clinic.phone_number}`}>{clinic.phone_number}</a>
               ) : (
@@ -38,7 +40,7 @@ export const ClinicList = () => {
               )}
             </p>
             <p>
-              Hemsida:{" "}
+              <strong>{t("clinic_website")}:</strong>{" "}
               {clinic.website ? (
                 <a href={clinic.website} target="_blank">
                   {clinic.website}
@@ -48,7 +50,11 @@ export const ClinicList = () => {
               )}
             </p>
             {clinic.distance && (
-            <p>Avstånd: {clinic.distance} km</p>)}
+              <p>
+                <strong>{t("distance")}:</strong>{" "}
+                {clinic.distance} km
+              </p>
+            )}
           </div>
         </List.Item>
       )}

@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Button, Modal, Input, Form, message } from "antd";
+import { Button, Modal, Input, Form, message} from "antd";
 import { useAuth } from "../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export const LoginModal = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   const showModal = () => {
     setOpen(true);
@@ -32,9 +34,15 @@ export const LoginModal = () => {
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        Login
+        {t("login")}
       </Button>
-      <Modal title="Login" open={open} onCancel={handleCancel} footer={null}>
+      <Modal
+        title="Login"
+        open={open}
+        onCancel={handleCancel}
+        footer={null}
+        destroyOnClose
+      >
         <Form
           name="login"
           onFinish={handleOk}
@@ -49,18 +57,21 @@ export const LoginModal = () => {
               { type: "email", message: "Please enter a valid email!" },
             ]}
           >
-            <Input placeholder="Enter your email" />
+            <Input placeholder="Enter your email" aria-label="Email" />
           </Form.Item>
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: "Please enter your password!" }]}
+            rules={[{ required: true, message: "Please enter your password." }]}
           >
-            <Input.Password placeholder="Enter your password" />
+            <Input.Password
+              placeholder="Enter your password"
+              aria-label="Password"
+            />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={confirmLoading}>
-              Login
+              {t("login")}
             </Button>
           </Form.Item>
         </Form>

@@ -10,5 +10,11 @@
   "login": "Logga in",
   "register": "Skapa konto",
   "city": "Stad",
-  "city_search": "Sök stad"
+  "city_search": "Sök stad",
+  "name": "Namn",
+  "county": "Län",
+  "homepage": "Startsida",
+  "findvet": "Hitta Veterinär",
+  "profile": "Profil",
+  "petfirstaid": "Pet First Aid"
 }

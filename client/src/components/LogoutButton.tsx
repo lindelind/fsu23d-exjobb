@@ -1,9 +1,12 @@
 
 import { Button } from "antd";
 import { useAuth } from "../contexts/AuthContext";
+import { useTranslation } from "react-i18next";
+
 
 export const LogoutButton = () => {
   const { logout } = useAuth();
+  const { t } = useTranslation();
 
   const handleLogout = async () => {
     try {
@@ -15,7 +18,7 @@ export const LogoutButton = () => {
 
   return (
     <Button type="primary" onClick={handleLogout}>
-      Logout
+      {t("logout")}
     </Button>
   );
 };

@@ -9,5 +9,11 @@
   "login": "Login",
   "register": "Sign up",
   "city": "City",
-  "city_search": "Search city"
+  "city_search": "Search city",
+  "name": "Name",
+  "county": "County",
+  "homepage": "Home",
+  "findvet": "Find Vet",
+  "profile": "Profile",
+  "petfirstaid": "Pet First Aid"
 }
