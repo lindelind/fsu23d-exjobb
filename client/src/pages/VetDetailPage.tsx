@@ -15,9 +15,7 @@ export const VetDetailPage = () => {
 
   if (loading) {
     return (
-      <Flex align="center" gap="middle">
-        <Spin size="small" />
-        <Spin />
+      <Flex align="center">
         <Spin size="large" />
       </Flex>
     );
