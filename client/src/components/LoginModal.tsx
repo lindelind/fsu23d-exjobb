@@ -17,11 +17,11 @@ export const LoginModal = () => {
     setConfirmLoading(true);
     try {
       await login(values.email, values.password);
-      message.success("Du är nu inloggad!");
+      message.success(t("login_success"));
       setOpen(false);
     } catch (error: any) {
       console.error("Login failed:", error);
-      message.error(error.message || "Login failed. Please try again.");
+      message.error(error.message || t("login_fail"));
     } finally {
       setConfirmLoading(false);
     }
@@ -50,22 +50,22 @@ export const LoginModal = () => {
           initialValues={{ email: "", password: "" }}
         >
           <Form.Item
-            label="Email"
+            label={t("email")}
             name="email"
             rules={[
-              { required: true, message: "Please enter your email!" },
-              { type: "email", message: "Please enter a valid email!" },
+              { required: true, message: t("email_required_message") },
+              { type: "email", message: t("email_type_message") },
             ]}
           >
-            <Input placeholder="Enter your email" aria-label="Email" />
+            <Input placeholder={t("email_placeholder")} aria-label="Email" />
           </Form.Item>
           <Form.Item
-            label="Password"
+            label={t("password")}
             name="password"
-            rules={[{ required: true, message: "Please enter your password." }]}
+            rules={[{ required: true, message: t("password_required_message") }]}
           >
             <Input.Password
-              placeholder="Enter your password"
+              placeholder={t("password_placeholder")}
               aria-label="Password"
             />
           </Form.Item>
