@@ -3,7 +3,6 @@ import { initReactI18next } from "react-i18next";
 import enTranslation from "./locales/en/translation.json";
 import svTranslation from "./locales/sv/translation.json";
 
-
 i18n.use(initReactI18next).init({
   resources: {
     en: {
@@ -17,6 +16,11 @@ i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false, 
   },
+});
+
+document.documentElement.lang = i18n.language;
+i18n.on("languageChanged", (lng) => {
+  document.documentElement.lang = lng;
 });
 
 export default i18n;
