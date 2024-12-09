@@ -8,6 +8,7 @@ import React, {
 import axios from "axios";
 import { message } from "antd";
 import { fetchIdToken, loginUser, logoutUser } from "../firebase-auth/authService";
+import { useTranslation } from "react-i18next";
 
 interface User {
   name: string;
@@ -27,6 +28,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const {t} = useTranslation();
 
   
   const fetchUser = async () => {
@@ -82,10 +84,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
 
       setUser(null);
-      message.success("Logout successful!");
+      message.success(t("logout_success"));
     } catch (error) {
       console.error("Logout failed:", error);
-      message.error("Logout failed. Please try again.");
+      message.error(t("logout_fail"));
     }
   };
 

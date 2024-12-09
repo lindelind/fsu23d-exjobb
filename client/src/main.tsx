@@ -5,6 +5,7 @@ import { router } from './Router.tsx';
 import { RouterProvider } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext.tsx';
 import { ClinicsProvider } from './contexts/ClinicsContext.tsx';
+import "./i18n.ts"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <AuthProvider>

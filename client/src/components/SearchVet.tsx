@@ -3,6 +3,7 @@ import { Input, message, Select, Modal } from "antd";
 import { useState } from "react";
 import { useClinics } from "../contexts/ClinicsContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const SearchVet = () => {
   const { Option } = Select;
@@ -12,6 +13,7 @@ export const SearchVet = () => {
   const  [radius, setRadius] = useState(20);
   const [userLocation, setUserLocation] = useState<{lat: number; long: number;} | null>(null);
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const onSearch = (value: string) => {
     if (searchType === "city") {
@@ -22,7 +24,7 @@ export const SearchVet = () => {
 
   const getUserLocation = () => {
     if (!navigator.geolocation) {
-      message.error("Platsinfo är inte tillgängligt");
+      message.error(t("location_not_available"));
       return;
     }
 
@@ -36,7 +38,7 @@ export const SearchVet = () => {
       },
       (error) => {
         message.error(
-          "Kunde inte hämta plats. Kontrollera dina inställningar."
+          t("location_error_message")
         );
         console.error("Geolocation error:", error);
       }
@@ -59,18 +61,18 @@ export const SearchVet = () => {
   return (
     <>
       <Input.Search
-        placeholder={searchType === "city" ? "Sök stad" : "Sök namn"}
+        placeholder={searchType === "city" ? t("city_search") : "Sök namn"}
         enterButton={<SearchOutlined />}
         size="large"
         addonBefore={
           <Select
-            defaultValue="Stad"
+            defaultValue="city"
             onChange={setSearchType}
             style={{ width: 80 }}
           >
-            <Option value="city">Stad</Option>
-            <Option value="name">Namn</Option>
-            <Option value="län">Län</Option>
+            <Option value="city"> {t("city")}</Option>
+            <Option value="name">{t("name")}</Option>
+            <Option value="län">{t("county")}</Option>
           </Select>
         }
         suffix={
@@ -84,16 +86,13 @@ export const SearchVet = () => {
       />
 
       <Modal
-        title="Välj avstånd till veterinär"
+        title={t("choose_distance")}
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
-        style={{maxWidth: "400px" }}
+        style={{ maxWidth: "400px" }}
       >
-        <p>
-          Svaren filtreras alltid för att visa den klinik som ligger närmast dig
-          först.
-        </p>
+        <p>{t("choose_distance_info")}</p>
         <Select
           defaultValue={20}
           style={{ width: "100%" }}
