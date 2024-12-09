@@ -60,8 +60,19 @@
   },
   "opening_hours": "Opening Hours",
   "closed": "Closed",
-  "open_24_hours": "Open 24 hours"
+  "open_24_hours": "Open 24 hours",
 
+
+  "add_review": "Add Review",
+  "add_review_title": "Write a Review",
+  "rating": "Rating",
+  "rating_required": "Please provide a rating.",
+  "comment": "Comment",
+  "comment_required": "Please provide a comment.",
+  "comment_placeholder": "Write your comment here...",
+  "submit_review": "Submit Review",
+  "review_submitted": "Review submitted successfully!",
+  "review_failed": "Failed to submit review.",
+  "login_required": "You must be logged in to add a review."
 }
-
 
