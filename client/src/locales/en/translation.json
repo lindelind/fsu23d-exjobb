@@ -12,7 +12,6 @@
   "choose_distance": "Choose distance to the veterinarian",
   "choose_distance_info": "The results are always filtered to show the clinic closest to you first",
 
-
   "logout": "Logout",
   "login": "Login",
   "email": "Email",
@@ -48,5 +47,21 @@
   "petfirstaid": "Pet First Aid",
   "saved_clinics_nav": "Saved Clinics",
   "findvet-page-title": "Find Vet",
-  "findvet-page-intro": "Here you can search for and find contact information for your nearest veterinarian."
+  "findvet-page-intro": "Here you can search for and find contact information for your nearest veterinarian.",
+
+  "days": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "opening_hours": "Opening Hours",
+  "closed": "Closed",
+  "open_24_hours": "Open 24 hours"
+
 }
+
+

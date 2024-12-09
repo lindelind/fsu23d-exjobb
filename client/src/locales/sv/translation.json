@@ -46,5 +46,18 @@
   "petfirstaid": "Pet First Aid",
   "saved_clinics_nav": "Sparade Kliniker",
   "findvet-page-title": "Hitta Veterinär",
-  "findvet-page-intro": " Här kan du söka och hitta kontaktuppgifter till din närmsta veterinär."
+  "findvet-page-intro": " Här kan du söka och hitta kontaktuppgifter till din närmsta veterinär.",
+
+  "days": {
+    "monday": "Måndag",
+    "tuesday": "Tisdag",
+    "wednesday": "Onsdag",
+    "thursday": "Torsdag",
+    "friday": "Fredag",
+    "saturday": "Lördag",
+    "sunday": "Söndag"
+  },
+  "opening_hours": "Öppettider",
+  "closed": "Stängt",
+  "open_24_hours": "Öppet dygnet runt"
 }
