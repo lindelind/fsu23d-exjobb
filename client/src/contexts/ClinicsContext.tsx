@@ -21,6 +21,13 @@ export interface Clinic {
   openinghours: string[] | null;
 }
 
+export interface Review {
+  clinicId: string;
+  rating: number, 
+  comment: string;
+  userEmail: string;
+}
+
 interface ClinicsContextProps {
   clinics: Clinic[];
   clinic: Clinic | null;
@@ -28,6 +35,7 @@ interface ClinicsContextProps {
   fetchByCity: (city?: string) => Promise<void>;
   fetchByLocation: (lat: number, long: number, radius: number) => Promise<void>;
   fetchById: (id: string) => Promise<void>;
+  addReview: (review: Review) => Promise<void>;
 }
 
 const ClinicsContext = createContext<ClinicsContextProps | undefined>(
@@ -91,6 +99,29 @@ const fetchById = useCallback(async (id: string) => {
   }
 }, []);
 
+const addReview = async (review: Review) => {
+  try {
+    setLoading(true);
+    const response = await axios.post(
+      `http://localhost:3000/api/vet-clinics/${review.clinicId}/reviews`,
+      {
+        rating: review.rating,
+        comment: review.comment,
+        user: review.userEmail,
+      }
+    );
+
+    if (response.data.success) {
+      console.log("Review added successfully:", response.data);
+    } else {
+      console.error("Failed to add review:", response.data.message);
+    }
+  } catch (error) {
+    console.error("Error adding review:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   return (
@@ -101,7 +132,8 @@ const fetchById = useCallback(async (id: string) => {
         loading,
         fetchByCity,
         fetchByLocation,
-        fetchById
+        fetchById, 
+        addReview
       }}
     >
       {children}
