@@ -24,7 +24,7 @@ export const SearchVet = () => {
 
   const getUserLocation = () => {
     if (!navigator.geolocation) {
-      message.error("Platsinfo är inte tillgängligt");
+      message.error(t("location_not_available"));
       return;
     }
 
@@ -38,7 +38,7 @@ export const SearchVet = () => {
       },
       (error) => {
         message.error(
-          "Kunde inte hämta plats. Kontrollera dina inställningar."
+          t("location_error_message")
         );
         console.error("Geolocation error:", error);
       }
@@ -86,16 +86,13 @@ export const SearchVet = () => {
       />
 
       <Modal
-        title="Välj avstånd till veterinär"
+        title={t("choose_distance")}
         open={open}
         onOk={handleOk}
         onCancel={handleCancel}
         style={{ maxWidth: "400px" }}
       >
-        <p>
-          Svaren filtreras alltid för att visa den klinik som ligger närmast dig
-          först.
-        </p>
+        <p>{t("choose_distance_info")}</p>
         <Select
           defaultValue={20}
           style={{ width: "100%" }}

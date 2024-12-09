@@ -36,7 +36,7 @@ export const ClinicList = () => {
               {clinic.phone_number ? (
                 <a href={`tel:${clinic.phone_number}`}>{clinic.phone_number}</a>
               ) : (
-                "Finns ej"
+                t("clinic_info_null")
               )}
             </p>
             <p>
@@ -46,13 +46,12 @@ export const ClinicList = () => {
                   {clinic.website}
                 </a>
               ) : (
-                "Finns ej"
+                t("clinic_info_null")
               )}
             </p>
             {clinic.distance && (
               <p>
-                <strong>{t("distance")}:</strong>{" "}
-                {clinic.distance} km
+                <strong>{t("distance")}:</strong> {clinic.distance} km
               </p>
             )}
           </div>
