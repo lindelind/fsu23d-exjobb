@@ -59,5 +59,19 @@
   },
   "opening_hours": "Öppettider",
   "closed": "Stängt",
-  "open_24_hours": "Öppet dygnet runt"
+  "open_24_hours": "Öppet dygnet runt",
+
+  "reviews": "Recensioner",
+  "add_review": "Lämna recension",
+  "add_review_title": "Skriv en recension",
+  "rating": "Betyg",
+  "rating_required": "Vänligen ange ett betyg.",
+  "comment": "Kommentar",
+  "comment_required": "Vänligen ange en kommentar.",
+  "comment_placeholder": "Skriv din kommentar här...",
+  "submit_review": "Skicka recension",
+  "review_submitted": "Recension skickad!",
+  "review_failed": "Det gick inte att skicka recensionen.",
+  "no_reviews": "Det finns inga recensioner för denna kliniken.",
+  "login_required": "Du måste vara inloggad för att lämna en recension."
 }
