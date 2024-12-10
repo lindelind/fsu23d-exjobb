@@ -32,4 +32,38 @@ const addReview = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export { addReview };
+
+const fetchReviews = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { clinicId } = req.params;
+
+    const reviewsRef = db.collection("reviews");
+    const snapshot = await reviewsRef.where("clinicId", "==", clinicId).get();
+
+    if (snapshot.empty) {
+      return res.status(404).json({
+        success: false,
+        message: "No reviews found for this clinic.",
+      });
+    }
+
+    const reviews = snapshot.docs.map((doc: any) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    res.status(200).json({
+      success: true,
+      data: reviews,
+    });
+  } catch (error: any) {
+    console.error("Error fetching reviews:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch reviews",
+    });
+  }
+};
+
+
+export { addReview, fetchReviews };
