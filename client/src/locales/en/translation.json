@@ -62,7 +62,7 @@
   "closed": "Closed",
   "open_24_hours": "Open 24 hours",
 
-
+  "reviews": "Reviews",
   "add_review": "Add Review",
   "add_review_title": "Write a Review",
   "rating": "Rating",
@@ -73,6 +73,7 @@
   "submit_review": "Submit Review",
   "review_submitted": "Review submitted successfully!",
   "review_failed": "Failed to submit review.",
+  "no_reviews": "No reviews available for this clinic.",
   "login_required": "You must be logged in to add a review."
 }
 
