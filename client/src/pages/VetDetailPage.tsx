@@ -57,7 +57,13 @@ export const VetDetailPage = () => {
                 <p>
                   <strong>{t("rating")}:</strong> {review.rating}
                 </p>
-                <p>
+                <p
+                  style={{
+                    wordWrap: "break-word",
+                    wordBreak: "break-word",
+                    margin: 0,
+                  }}
+                >
                   <strong>{t("comment")}:</strong> {review.comment}
                 </p>
               </div>
