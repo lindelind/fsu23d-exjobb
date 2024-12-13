@@ -40,6 +40,11 @@ interface ClinicsContextProps {
   fetchReviews: (clinicId: string) => Promise<void>;
 }
 
+const API_URL = "https://fsu23d-exjobb.onrender.com/api"
+// const API_URL = "http://localhost:3000/api";
+
+
+
 const ClinicsContext = createContext<ClinicsContextProps | undefined>(
   undefined
 );
@@ -56,7 +61,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/vet-clinics?city=${city}` //TODO: ändra cityparametern så den är dynamisk beroende på vad man selectar att söka på, eller skapa separata funktioner?
+        `${API_URL}/vet-clinics?city=${city}` //TODO: ändra cityparametern så den är dynamisk beroende på vad man selectar att söka på, eller skapa separata funktioner?
       );
       const data = response.data;
 
@@ -78,7 +83,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       console.log("Fetching by location:", { lat, long, radius });
       const response = await axios.get(
-        `http://localhost:3000/api/vet-clinics-location?lat=${lat}&long=${long}&radius=${radius}`
+        `${API_URL}/vet-clinics-location?lat=${lat}&long=${long}&radius=${radius}`
       );
       console.log("Response data:", response.data);
 
@@ -95,7 +100,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     try {
       const response = await axios.get<{ success: boolean; data: Clinic[] }>(
-        `http://localhost:3000/api/vet-clinics/${id}`
+        `${API_URL}/vet-clinics/${id}`
       );
       setClinic(response.data.data[0] || null);
     } catch (error) {
@@ -110,7 +115,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:3000/api/vet-clinics/${review.clinicId}/reviews`,
+        `${API_URL}/vet-clinics/${review.clinicId}/reviews`,
         {
           rating: review.rating,
           comment: review.comment,
@@ -133,9 +138,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchReviews = useCallback(async (id: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/vet-clinics/${id}/reviews`
-      );
+      const response = await axios.get(`${API_URL}/vet-clinics/${id}/reviews`);
       setReviews(response.data.data || []);
     } catch (error) {
       console.error("Error fetching reviews:", error);

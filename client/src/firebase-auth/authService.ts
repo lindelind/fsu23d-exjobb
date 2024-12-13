@@ -7,6 +7,11 @@ import {
 import axios from "axios";
 import { auth } from "../firebaseConfig";
 
+
+const API_URL = "https://fsu23d-exjobb.onrender.com/api"
+// const API_URL = "http://localhost:3000/api"
+    
+
 export const registerUser = async (
   email: string,
   password: string,
@@ -20,7 +25,7 @@ export const registerUser = async (
     );
     const user = userCredential.user;
 
-    await axios.post("http://localhost:3000/api/register", {
+    await axios.post(`${API_URL}/register`, {
       uid: user.uid,
       name, 
       email: user.email,
@@ -62,6 +67,7 @@ export const fetchIdToken = async () => {
   }
 
   const idToken = await user.getIdToken();
+  console.log("Fetched ID token:", idToken);
   return idToken;
 };
 
