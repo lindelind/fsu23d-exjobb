@@ -66,12 +66,12 @@ const createSessionCookie = async (req: any, res: any) => {
       .createSessionCookie(idToken, { expiresIn });
 
     
-    res.cookie("session", sessionCookie, {
-      maxAge: expiresIn,
-      httpOnly: true,
-     secure: false,
+   res.cookie("session", sessionCookie, {
+     maxAge: expiresIn,
+     httpOnly: true,
+     secure: true,
      sameSite: "none",
-    });
+   });
 
     res.status(200).send({ message: "Session cookie created successfully" });
   } catch (error) {
