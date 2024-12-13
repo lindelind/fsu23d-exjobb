@@ -70,7 +70,7 @@ const createSessionCookie = async (req: any, res: any) => {
       maxAge: expiresIn,
       httpOnly: true,
      secure: false,
-     sameSite: "lax",
+     sameSite: "none",
     });
 
     res.status(200).send({ message: "Session cookie created successfully" });
