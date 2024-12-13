@@ -8,9 +8,12 @@ import axios from "axios";
 import { auth } from "../firebaseConfig";
 
 
-const API_URL = "https://fsu23d-exjobb.onrender.com/api"
-// const API_URL = "http://localhost:3000/api"
-    
+const API_URL =
+  import.meta.env.MODE === "production"
+    ? "https://fsu23d-exjobb.onrender.com/api"
+    : "http://localhost:3000/api";
+
+console.log(`API_URL is set to: ${API_URL}`);
 
 export const registerUser = async (
   email: string,

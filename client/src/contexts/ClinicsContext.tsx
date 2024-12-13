@@ -40,8 +40,12 @@ interface ClinicsContextProps {
   fetchReviews: (clinicId: string) => Promise<void>;
 }
 
-const API_URL = "https://fsu23d-exjobb.onrender.com/api"
-// const API_URL = "http://localhost:3000/api";
+const API_URL =
+  import.meta.env.MODE === "production"
+    ? "https://fsu23d-exjobb.onrender.com/api"
+    : "http://localhost:3000/api";
+
+console.log(`API_URL is set to: ${API_URL}`);
 
 
 
