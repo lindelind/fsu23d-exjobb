@@ -10,6 +10,9 @@ import { message } from "antd";
 import { fetchIdToken, loginUser, logoutUser } from "../firebase-auth/authService";
 import { useTranslation } from "react-i18next";
 
+const API_URL = "https://fsu23d-exjobb.onrender.com/api"
+// const API_URL = "http://localhost:3000/api";
+
 interface User {
   name: string;
   email: string;
@@ -33,8 +36,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const fetchUser = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/user-data", {
+      const response = await axios.get(`${API_URL}/user-data`, {
         withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       setUser(response.data);
     } catch (error) {
@@ -53,20 +59,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string) => {
     try {
       
+      
       await loginUser(email, password);
       const idToken = await fetchIdToken();
       if (!idToken) {
         throw new Error("Failed to fetch ID token.");
       }
 
-      await axios.post(
-        "http://localhost:3000/api/session-login",
-        { idToken },
-        { withCredentials: true }
-      );
+      console.log("Sending ID token to session-login:", idToken);
+
+   await axios.post(
+     `${API_URL}/session-login`,
+     { idToken },
+     {
+       withCredentials: true,
+     }
+   );
+
 
       await fetchUser();
-      ;
     } catch (error) {
       console.error("Login failed:", error);
       throw error; 
@@ -78,7 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       await logoutUser();
       await axios.post(
-        "http://localhost:3000/api/session-logout",
+        `${API_URL}/session-logout`,
         {},
         { withCredentials: true }
       );
