@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect} from "react";
 import { useParams } from "react-router-dom";
 import { Review, useClinics } from "../contexts/ClinicsContext";
 import { Flex, List, Spin } from "antd";
@@ -7,9 +7,9 @@ import { AddReviewsModal } from "../components/AddReviewsModal";
 
 export const VetDetailPage = () => {
   const { id } = useParams();
-  const { clinic, fetchById, loading, addReview, fetchReviews, reviews } =
+  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen } =
     useClinics();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     if (id) {
@@ -38,10 +38,59 @@ export const VetDetailPage = () => {
     return <p>{t("clinic_not_found")}</p>;
   }
 
+  const openingHours =
+    clinic.openinghours?.[i18n.language] ?? clinic.openinghours?.["sv"] ?? [];
+
   return (
     <div>
       <h2>{clinic.name}</h2>
-      <p>{clinic.formatted_address}</p>
+      <p>
+        {(() => {
+          const clinicOpen = isClinicOpen(openingHours);
+          return (
+            <span style={{ color: clinicOpen ? "green" : "red" }}>
+              {clinicOpen ? t("open") : t("closed")}
+            </span>
+          );
+        })()}
+      </p>
+      <p>
+        <strong>{t("clinic_address")}:</strong>{" "}
+        <a
+          href={`https://www.google.com/maps?q=${clinic.coordinates.lat},${clinic.coordinates.long}`}
+          target="_blank"
+        >
+          {clinic.formatted_address}
+        </a>
+      </p>
+      <p>
+        <strong>{t("clinic_phone")}:</strong>{" "}
+        {clinic.phone_number ? (
+          <a href={`tel:${clinic.phone_number}`}>{clinic.phone_number}</a>
+        ) : (
+          t("clinic_info_null")
+        )}
+      </p>
+      <p>
+        <strong>{t("clinic_website")}:</strong>{" "}
+        {clinic.website ? (
+          <a href={clinic.website} target="_blank">
+            {clinic.website}
+          </a>
+        ) : (
+          t("clinic_info_null")
+        )}
+      </p>
+      <h3>{t("opening_hours")}</h3>
+      {openingHours.length > 0 ? (
+        <List
+          size="small"
+          dataSource={openingHours}
+          renderItem={(hours: any) => <p>{hours}</p>}
+        />
+      ) : (
+        <p>{t("no_opening_hours")}</p>
+      )}
 
       <AddReviewsModal clinicId={clinic.id} onSubmit={submitReview} />
 

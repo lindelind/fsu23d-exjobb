@@ -1,10 +1,14 @@
 require("dotenv").config();
-const axios = require("axios");
+import axios from "axios";
 const fs = require("fs");
 import { Clinic, Coordinates, FormattedAddress, PlaceDetails } from "../types/types";
 import { locations } from "./locations";
 
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+
+const capitalizeFirstLetter = (text: string): string =>
+  text.charAt(0).toUpperCase() + text.slice(1);
+
 
 const fetchVeterinaryClinicsByCity = async (
   location: Coordinates,
@@ -12,12 +16,12 @@ const fetchVeterinaryClinicsByCity = async (
 ): Promise<Clinic[]> => {
   try {
     console.log(`Hämtar kliniker för: ${cityName}`);
-    const allClinics = new Map(); 
+    const allClinics = new Map();
 
     let nextPageToken = null;
 
     do {
-      const nearbySearchUrl: any = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=50000&type=veterinary_care&key=${GOOGLE_API_KEY}${
+      const nearbySearchUrl: any = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=20000&type=veterinary_care&key=${GOOGLE_API_KEY}${
         nextPageToken ? `&pagetoken=${nextPageToken}` : ""
       }`;
 
@@ -39,22 +43,37 @@ const fetchVeterinaryClinicsByCity = async (
 
       for (const place of places) {
         if (!allClinics.has(place.place_id)) {
-          const placeDetailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id&key=${GOOGLE_API_KEY}`;
-          const detailsResponse = await axios.get(placeDetailsUrl);
+          const detailsSvUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id&key=${GOOGLE_API_KEY}&language=sv`;
+          const detailsEnUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id&key=${GOOGLE_API_KEY}&language=en`;
 
-          if (detailsResponse.data.status !== "OK") {
+          const [detailsSvResponse, detailsEnResponse] = await Promise.all([
+            axios.get(detailsSvUrl),
+            axios.get(detailsEnUrl),
+          ]);
+
+          if (
+            detailsSvResponse.data.status !== "OK" ||
+            detailsEnResponse.data.status !== "OK"
+          ) {
             console.warn(
               `Fel vid hämtning av detaljer för ${place.place_id}:`,
-              detailsResponse.data.status
+              detailsSvResponse.data.status,
+              detailsEnResponse.data.status
             );
             continue;
           }
 
-          const details: PlaceDetails = detailsResponse.data.result;
+          const detailsSv: PlaceDetails = detailsSvResponse.data.result;
+          const detailsEn: PlaceDetails = detailsEnResponse.data.result;
 
-          if (!details) continue;
+          if (!detailsSv || !detailsEn) continue;
 
-          const addressComponents = details.address_components || [];
+          const formattedOpeningHoursSv =
+            detailsSv.opening_hours?.weekday_text.map((entry) =>
+              capitalizeFirstLetter(entry)
+            ) || null;
+
+          const addressComponents = detailsSv.address_components || [];
           const formattedAddress: FormattedAddress = {
             streetAddress: (() => {
               const route =
@@ -88,19 +107,22 @@ const fetchVeterinaryClinicsByCity = async (
           };
 
           allClinics.set(place.place_id, {
-            id: details.place_id,
-            name: details.name,
+            id: detailsSv.place_id,
+            name: detailsSv.name,
             address: formattedAddress,
-            coordinates: details.geometry?.location
+            coordinates: detailsSv.geometry?.location
               ? {
-                  lat: details.geometry.location.lat,
-                  long: details.geometry.location.lng,
+                  lat: detailsSv.geometry.location.lat,
+                  long: detailsSv.geometry.location.lng,
                 }
               : { lat: null, long: null },
-            formatted_address: details.formatted_address,
-            phone_number: details.international_phone_number || null,
-            website: details.website || null,
-            openinghours: details.opening_hours?.weekday_text || null,
+            formatted_address: detailsSv.formatted_address,
+            phone_number: detailsSv.international_phone_number || null,
+            website: detailsSv.website || null,
+            openinghours: {
+              sv: formattedOpeningHoursSv,
+              en: detailsEn.opening_hours?.weekday_text || null,
+            },
           });
         }
       }
@@ -158,6 +180,5 @@ const generateNewClinicsFile = async (locations:any) => {
 (async () => {
   await generateNewClinicsFile(locations);
 })();
-
 
 

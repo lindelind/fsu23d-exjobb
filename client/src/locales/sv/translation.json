@@ -58,8 +58,10 @@
     "sunday": "Söndag"
   },
   "opening_hours": "Öppettider",
-  "closed": "Stängt",
+  "closed": "STÄNGT",
   "open_24_hours": "Öppet dygnet runt",
+  "open": "ÖPPET",
+  "no_opening_hours": "Öppettider är inte tillgängliga",
 
   "reviews": "Recensioner",
   "add_review": "Lämna recension",
