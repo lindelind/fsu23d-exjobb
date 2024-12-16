@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect} from "react";
 import { useParams } from "react-router-dom";
 import { Review, useClinics } from "../contexts/ClinicsContext";
 import { Flex, List, Spin } from "antd";
@@ -54,8 +54,33 @@ export const VetDetailPage = () => {
           );
         })()}
       </p>
-      <p>{clinic.formatted_address}</p>
-
+      <p>
+        <strong>{t("clinic_address")}:</strong>{" "}
+        <a
+          href={`https://www.google.com/maps?q=${clinic.coordinates.lat},${clinic.coordinates.long}`}
+          target="_blank"
+        >
+          {clinic.formatted_address}
+        </a>
+      </p>
+      <p>
+        <strong>{t("clinic_phone")}:</strong>{" "}
+        {clinic.phone_number ? (
+          <a href={`tel:${clinic.phone_number}`}>{clinic.phone_number}</a>
+        ) : (
+          t("clinic_info_null")
+        )}
+      </p>
+      <p>
+        <strong>{t("clinic_website")}:</strong>{" "}
+        {clinic.website ? (
+          <a href={clinic.website} target="_blank">
+            {clinic.website}
+          </a>
+        ) : (
+          t("clinic_info_null")
+        )}
+      </p>
       <h3>{t("opening_hours")}</h3>
       {openingHours.length > 0 ? (
         <List
