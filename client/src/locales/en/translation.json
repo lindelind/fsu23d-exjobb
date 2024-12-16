@@ -59,8 +59,10 @@
     "sunday": "Sunday"
   },
   "opening_hours": "Opening Hours",
-  "closed": "Closed",
+  "closed": "CLOSED",
   "open_24_hours": "Open 24 hours",
+  "open": "OPEN",
+  "no_opening_hours": "Opening hours are not available",
 
   "reviews": "Reviews",
   "add_review": "Add Review",
