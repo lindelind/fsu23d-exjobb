@@ -184,9 +184,8 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
       return false;
     }
 
-    //om öppettiderna är uppdelat i två
     const timePeriods = todayHours.replace(/^[^:]+:\s*/, "").split(/,\s*/);
-    // console.log("Tider:", timePeriods);
+ 
 
     const status = timePeriods[0].toLowerCase();
     if (["closed", "stängt"].includes(status)) {
@@ -225,8 +224,6 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       return false;
     });
-
-    console.log("Is clinic open:", isOpen);
     return isOpen;
   };
 
