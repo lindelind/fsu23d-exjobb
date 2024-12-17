@@ -1,3 +1,5 @@
+import { FieldValue } from "../firebase"
+
 const admin = require("firebase-admin");
 
 const registerUser = async (req: any, res: any) => {
@@ -40,7 +42,12 @@ const getUserData = async (req: any, res: any) => {
       return res.status(404).send({ error: "User not found" });
     }
 
-    res.status(200).send(user.data());
+    const userData = {
+      id: user.id,
+      ...user.data(),
+    };
+
+    res.status(200).send(userData);
   } catch (error) {
     console.error("Error fetching user data:", error);
     res.status(500).send({ error: "Failed to fetch user data" });
@@ -89,5 +96,25 @@ const sessionLogout = (req: any, res: any) => {
   res.status(200).send({ message: "Session cleared. You are logged out" });
 };
 
+const saveClinicToUser = async (req: any, res: any) => {
+  const {id, clinicId } = req.body;
 
-export { registerUser, getUserData, createSessionCookie, sessionLogout };
+  try {
+    const db = admin.firestore();
+    await db
+      .collection("users")
+      .doc(id)
+      .update({
+        savedClinics: FieldValue.arrayUnion(clinicId)
+      });
+
+    res.status(200).send({ message: "Clinic ID saved" });
+  } catch (error) {
+    console.error("Error saving clinic ID:", error);
+    res.status(500).send({ error: "Failed to save clinic ID" });
+  }
+};
+
+
+
+export { registerUser, getUserData, createSessionCookie, sessionLogout , saveClinicToUser};
