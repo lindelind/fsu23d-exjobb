@@ -39,6 +39,7 @@ interface ClinicsContextProps {
   addReview: (review: Review) => Promise<void>;
   fetchReviews: (clinicId: string) => Promise<void>;
   isClinicOpen: (openinghours: string[] | null) => boolean;
+  saveClinic: (id: string, clinicId: string) => Promise<void>;
 }
 
 const API_URL =
@@ -227,6 +228,19 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     return isOpen;
   };
 
+ const saveClinic = async (id: string, clinicId: string) => {
+   try {
+     setLoading(true);
+     await axios.post(`${API_URL}/save-clinic`, {id, clinicId });
+     console.log("Clinic saved successfully!");
+   } catch (error) {
+     console.error("Error saving clinic:", error);
+   } finally {
+     setLoading(false);
+   }
+ };
+
+
   return (
     <ClinicsContext.Provider
       value={{
@@ -240,6 +254,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
         addReview,
         fetchReviews,
         isClinicOpen,
+        saveClinic
       }}
     >
       {children}

@@ -1,13 +1,15 @@
 import { useEffect} from "react";
 import { useParams } from "react-router-dom";
 import { Review, useClinics } from "../contexts/ClinicsContext";
-import { Flex, List, Spin } from "antd";
+import { Button, Flex, List, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { AddReviewsModal } from "../components/AddReviewsModal";
+import { useAuth } from "../contexts/AuthContext";
 
 export const VetDetailPage = () => {
   const { id } = useParams();
-  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen } =
+  const {user} = useAuth();
+  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen, saveClinic } =
     useClinics();
   const { t, i18n } = useTranslation();
 
@@ -37,6 +39,14 @@ export const VetDetailPage = () => {
   if (!clinic) {
     return <p>{t("clinic_not_found")}</p>;
   }
+ console.log(user?.id , id)
+ const handleSaveClinic = async () => {
+   if (user?.id && id) {
+     await saveClinic(user.id, id);
+   } else {
+     console.error("User is not logged in or clinic ID is missing");
+   }
+ };
 
   const openingHours =
     clinic.openinghours?.[i18n.language] ?? clinic.openinghours?.["sv"] ?? [];
@@ -44,6 +54,7 @@ export const VetDetailPage = () => {
   return (
     <div>
       <h2>{clinic.name}</h2>
+      <Button onClick={handleSaveClinic}>Spara som favorit</Button>
       <p>
         {(() => {
           const clinicOpen = isClinicOpen(openingHours);
