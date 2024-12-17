@@ -1,7 +1,7 @@
 import { useEffect} from "react";
 import { useParams } from "react-router-dom";
 import { Review, useClinics } from "../contexts/ClinicsContext";
-import { Button, Flex, List, Spin } from "antd";
+import { Button, Flex, List, message, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { AddReviewsModal } from "../components/AddReviewsModal";
 import { useAuth } from "../contexts/AuthContext";
@@ -43,7 +43,9 @@ export const VetDetailPage = () => {
  const handleSaveClinic = async () => {
    if (user?.id && id) {
      await saveClinic(user.id, id);
+     message.success(t("clinic_saved"))
    } else {
+    message.error(t("clinic_save_fail"))
      console.error("User is not logged in or clinic ID is missing");
    }
  };
@@ -54,7 +56,7 @@ export const VetDetailPage = () => {
   return (
     <div>
       <h2>{clinic.name}</h2>
-      <Button onClick={handleSaveClinic}>Spara som favorit</Button>
+      <Button onClick={handleSaveClinic}>{t("save_clinic_btn")}</Button>
       <p>
         {(() => {
           const clinicOpen = isClinicOpen(openingHours);

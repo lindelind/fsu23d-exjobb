@@ -6,6 +6,10 @@
   "clinic_website": "Hemsida",
   "distance": "Avstånd",
 
+  "clinic_saved": "Klinik tillagd i favoriter",
+  "save_clinic_btn": "Spara som favorit",
+  "clinic_save_fail": "Gick ej att spara klinik till favoriter",
+
   "clinic_not_found": "Ingen klinik hittades.",
   "location_not_available": "Platsinfo är inte tillgängligt",
   "location_error_message": "Kunde inte hämta plats. Kontrollera dina inställningar.",

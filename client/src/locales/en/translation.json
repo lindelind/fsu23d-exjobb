@@ -6,6 +6,10 @@
   "clinic_website": "Website",
   "distance": "Distance",
 
+  "clinic_saved": "Clinic added to favorites",
+  "save_clinic_btn": "Save as favorite",
+  "clinic_save_fail": "Could not save clinic to favorites",
+
   "clinic_not_found": "No clinic found.",
   "location_not_available": "Location info is not available",
   "location_error_message": "Could not fetch location. Please check your settings.",
