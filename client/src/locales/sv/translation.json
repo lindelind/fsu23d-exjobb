@@ -9,6 +9,9 @@
   "clinic_saved": "Klinik tillagd i favoriter",
   "save_clinic_btn": "Spara som favorit",
   "clinic_save_fail": "Gick ej att spara klinik till favoriter",
+  "saved_clinics": "Sparade kliniker",
+  "not_logged_in_alert": "Du måste vara inloggad för att se denna sidan.",
+  "no_saved_clinics": "Du har inga sparade kliniker.",
 
   "clinic_not_found": "Ingen klinik hittades.",
   "location_not_available": "Platsinfo är inte tillgängligt",
