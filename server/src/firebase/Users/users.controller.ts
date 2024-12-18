@@ -94,6 +94,14 @@ const saveClinicToUser = async (req: Request, res: Response) => {
   const { id, clinicId } = req.body;
 
   try {
+    const user = await db.collection("users").doc(id).get();
+
+    const { savedClinics = [] } = user.data();
+
+    if (savedClinics.includes(clinicId)) {
+      return res.status(400).send({ error: "Clinic is already saved" });
+    }
+
     await db
       .collection("users")
       .doc(id)

@@ -8,10 +8,12 @@
 
   "clinic_saved": "Clinic added to favorites",
   "save_clinic_btn": "Save as favorite",
-  "clinic_save_fail": "Could not save clinic to favorites",
+  "clinic_save_fail": "Could not save clinic to favorites. Login and try again.",
   "saved_clinics": "Saved Clinics",
   "not_logged_in_alert": "You must be logged in to view this page",
   "no_saved_clinics": "You have no saved clinics.",
+  "clinic_already_saved": "This clinic is already saved.",
+
 
   "clinic_not_found": "No clinic found.",
   "location_not_available": "Location info is not available",

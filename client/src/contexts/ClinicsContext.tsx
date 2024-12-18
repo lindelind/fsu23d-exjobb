@@ -259,6 +259,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
      console.log("Clinic saved successfully!");
    } catch (error) {
      console.error("Error saving clinic:", error);
+     throw error;
    } finally {
      setLoading(false);
    }

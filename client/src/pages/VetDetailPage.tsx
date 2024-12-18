@@ -39,16 +39,25 @@ export const VetDetailPage = () => {
   if (!clinic) {
     return <p>{t("clinic_not_found")}</p>;
   }
- console.log(user?.id , id)
- const handleSaveClinic = async () => {
-   if (user?.id && id) {
-     await saveClinic(user.id, id);
-     message.success(t("clinic_saved"))
-   } else {
-    message.error(t("clinic_save_fail"))
-     console.error("User is not logged in or clinic ID is missing");
-   }
- };
+
+const handleSaveClinic = async () => {
+  if (!user?.id || !id) {
+    return message.error(t("clinic_save_fail"));
+  }
+  try {
+    await saveClinic(user.id, id);
+    message.success(t("clinic_saved"));
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data.error === "Clinic is already saved"
+        ? t("clinic_already_saved")
+        : error.response?.status === 404
+          ? t("user_not_found")
+          : t("clinic_save_fail");
+
+    message.error(errorMessage);
+  }
+};
 
   const openingHours =
     clinic.openinghours?.[i18n.language] ?? clinic.openinghours?.["sv"] ?? [];
