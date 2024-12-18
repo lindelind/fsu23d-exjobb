@@ -1,4 +1,4 @@
-import { FieldValue } from "../firebase"
+import { db, FieldValue } from "../firebase"
 
 const admin = require("firebase-admin");
 
@@ -100,7 +100,6 @@ const saveClinicToUser = async (req: any, res: any) => {
   const {id, clinicId } = req.body;
 
   try {
-    const db = admin.firestore();
     await db
       .collection("users")
       .doc(id)
@@ -115,6 +114,23 @@ const saveClinicToUser = async (req: any, res: any) => {
   }
 };
 
+const fetchSavedClinics = async (req: any, res: any) => {
+  try {
+    const user = await db.collection("users").doc(req.params.id).get();
+    const { savedClinics = [] } = user.data();
+
+    const clinics = await Promise.all(
+      savedClinics.map((id: any) => db.collection("newTestClinics").doc(id).get())
+    );
+
+    res.status(200).send({clinics: clinics.filter((clinic) => clinic.exists)
+        .map((clinic) => ({ id: clinic.id, ...clinic.data() })),
+    });
+  } catch (error) {
+    console.error("Error fetching clinics", error)
+    res.status(500).send({ error: "Failed to fetch clinics" });
+  }
+};
 
 
-export { registerUser, getUserData, createSessionCookie, sessionLogout , saveClinicToUser};
+export { registerUser, getUserData, createSessionCookie, sessionLogout , saveClinicToUser, fetchSavedClinics};
