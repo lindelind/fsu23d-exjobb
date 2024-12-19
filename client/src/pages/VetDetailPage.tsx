@@ -9,7 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 export const VetDetailPage = () => {
   const { id } = useParams();
   const {user} = useAuth();
-  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen, saveClinic } =
+  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen, saveClinic, removeSavedClinic } =
     useClinics();
   const { t, i18n } = useTranslation();
 
@@ -59,6 +59,18 @@ const handleSaveClinic = async () => {
   }
 };
 
+const handleRemoveClinic = async() => {
+  if(!user?.id || !id) {
+    return message.error("Det gick inte att ta bort kliniken, försök igen")
+  }
+  try {
+    await removeSavedClinic(user.id, id);
+    message.success("Kliniken togs bort");
+  }catch(error) {
+    message.error("Det gick inte att ta bort kliniken")
+  }
+}
+
   const openingHours =
     clinic.openinghours?.[i18n.language] ?? clinic.openinghours?.["sv"] ?? [];
 
@@ -66,6 +78,7 @@ const handleSaveClinic = async () => {
     <div>
       <h2>{clinic.name}</h2>
       <Button onClick={handleSaveClinic}>{t("save_clinic_btn")}</Button>
+      <Button onClick={handleRemoveClinic}>Ta bort</Button>
       <p>
         {(() => {
           const clinicOpen = isClinicOpen(openingHours);

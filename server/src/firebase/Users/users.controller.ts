@@ -136,5 +136,26 @@ const fetchSavedClinics = async (req: Request, res: Response) => {
   }
 };
 
+const removeSavedClinic = async(req: Request, res: Response) => {
+  const { id, clinicId } = req.body;
+   try {
+    const user = await db.collection("users").doc(id).get();
 
-export { registerUser, getUserData, createSessionCookie, sessionLogout , saveClinicToUser, fetchSavedClinics};
+    await db
+      .collection("users")
+      .doc(id)
+      .update({
+        savedClinics: FieldValue.arrayRemove(clinicId),
+      });
+
+    res.status(200).send("Clinic successfully removed");
+
+  } catch(error) {
+    console.log("Error removing saved clinic", error)
+    res.status(500).send({error: "Failed to remove clinic"})
+
+   }
+}
+
+
+export { registerUser, getUserData, createSessionCookie, sessionLogout , saveClinicToUser, fetchSavedClinics, removeSavedClinic};

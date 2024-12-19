@@ -40,6 +40,7 @@ interface ClinicsContextProps {
   fetchReviews: (clinicId: string) => Promise<void>;
   isClinicOpen: (openinghours: string[] | null) => boolean;
   saveClinic: (id: string, clinicId: string) => Promise<void>;
+  removeSavedClinic: (id: string, clinicId: string) => Promise<void>;
   fetchSavedClinics: (id: string) => Promise<void>;
 }
 
@@ -265,6 +266,18 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
    }
  };
 
+ const removeSavedClinic = async (id: string, clinicId: string) => {
+   try {
+     setLoading(true);
+     await axios.post(`${API_URL}/remove-saved-clinic`, { id, clinicId });
+     console.log("Clinic removed successfully!");
+   } catch (error) {
+     console.error("Error removing clinic:", error);
+   } finally {
+     setLoading(false);
+   }
+ };
+
 
   return (
     <ClinicsContext.Provider
@@ -280,7 +293,8 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
         fetchReviews,
         isClinicOpen,
         saveClinic,
-        fetchSavedClinics
+        fetchSavedClinics, 
+        removeSavedClinic
       }}
     >
       {children}
