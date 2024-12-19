@@ -61,13 +61,13 @@ const handleSaveClinic = async () => {
 
 const handleRemoveClinic = async() => {
   if(!user?.id || !id) {
-    return message.error("Det gick inte att ta bort kliniken, försök igen")
+    return message.error(t("clinic_removed_fail"))
   }
   try {
     await removeSavedClinic(user.id, id);
-    message.success("Kliniken togs bort");
+    message.success(t("clinic_removed"));
   }catch(error) {
-    message.error("Det gick inte att ta bort kliniken")
+    message.error(t("clinic_removed_fail"))
   }
 }
 
@@ -78,7 +78,7 @@ const handleRemoveClinic = async() => {
     <div>
       <h2>{clinic.name}</h2>
       <Button onClick={handleSaveClinic}>{t("save_clinic_btn")}</Button>
-      <Button onClick={handleRemoveClinic}>Ta bort</Button>
+      <Button onClick={handleRemoveClinic}>{t("remove_clinic_btn")}</Button>
       <p>
         {(() => {
           const clinicOpen = isClinicOpen(openingHours);

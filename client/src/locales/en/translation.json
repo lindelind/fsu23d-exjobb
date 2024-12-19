@@ -8,6 +8,9 @@
 
   "clinic_saved": "Clinic added to favorites",
   "save_clinic_btn": "Save as favorite",
+  "remove_clinic_btn": "Remove as favorite",
+  "clinic_removed": "Clinic removed from favorites",
+  "clinic_removed_fail": "Could not remove clinic from favorites. Try again.",
   "clinic_save_fail": "Could not save clinic to favorites. Login and try again.",
   "saved_clinics": "Saved Clinics",
   "not_logged_in_alert": "You must be logged in to view this page",
