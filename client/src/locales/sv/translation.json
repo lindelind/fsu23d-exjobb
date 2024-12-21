@@ -6,6 +6,17 @@
   "clinic_website": "Hemsida",
   "distance": "Avstånd",
 
+  "clinic_saved": "Klinik tillagd i favoriter",
+  "save_clinic_btn": "Spara som favorit",
+  "remove_clinic_btn": "Ta bort favorit",
+  "clinic_removed": "Klinik borttagen från favoriter",
+  "clinic_removed_fail": "Det gick inte att ta bort kliniken. Försök igen",
+  "clinic_save_fail": "Gick ej att spara klinik till favoriter. Logga in och försök igen.",
+  "saved_clinics": "Sparade kliniker",
+  "not_logged_in_alert": "Du måste vara inloggad för att se denna sidan.",
+  "no_saved_clinics": "Du har inga sparade kliniker.",
+  "clinic_already_saved": "Denna kliniken är redan sparad.",
+
   "clinic_not_found": "Ingen klinik hittades.",
   "location_not_available": "Platsinfo är inte tillgängligt",
   "location_error_message": "Kunde inte hämta plats. Kontrollera dina inställningar.",

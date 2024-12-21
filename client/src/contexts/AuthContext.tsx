@@ -18,6 +18,7 @@ const API_URL =
 console.log(`API_URL is set to: ${API_URL}`);
 
 interface User {
+  id: string;
   name: string;
   email: string;
 };

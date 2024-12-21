@@ -39,6 +39,9 @@ interface ClinicsContextProps {
   addReview: (review: Review) => Promise<void>;
   fetchReviews: (clinicId: string) => Promise<void>;
   isClinicOpen: (openinghours: string[] | null) => boolean;
+  saveClinic: (id: string, clinicId: string) => Promise<void>;
+  removeSavedClinic: (id: string, clinicId: string) => Promise<void>;
+  fetchSavedClinics: (id: string) => Promise<void>;
 }
 
 const API_URL =
@@ -152,6 +155,29 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
 
+  const fetchSavedClinics = useCallback(async (userId: string) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${API_URL}/saved-clinics/${userId}`);
+      console.log("Response data:", response.data);
+
+      const data = response.data;
+      if (data.clinics) {
+        setClinics(data.clinics);
+      } else {
+        console.error("No clinics found in response.");
+        setClinics([]);
+      }
+    } catch (error) {
+      console.error("Error fetching saved clinics:", error);
+      setClinics([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+
+
   const isClinicOpen = (openinghours: string[] | null): boolean => {
     if (!openinghours?.length) {
       return false;
@@ -227,6 +253,32 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     return isOpen;
   };
 
+ const saveClinic = async (id: string, clinicId: string) => {
+   try {
+     setLoading(true);
+     await axios.post(`${API_URL}/save-clinic`, {id, clinicId });
+     console.log("Clinic saved successfully!");
+   } catch (error) {
+     console.error("Error saving clinic:", error);
+     throw error;
+   } finally {
+     setLoading(false);
+   }
+ };
+
+ const removeSavedClinic = async (id: string, clinicId: string) => {
+   try {
+     setLoading(true);
+     await axios.post(`${API_URL}/remove-saved-clinic`, { id, clinicId });
+     console.log("Clinic removed successfully!");
+   } catch (error) {
+     console.error("Error removing clinic:", error);
+   } finally {
+     setLoading(false);
+   }
+ };
+
+
   return (
     <ClinicsContext.Provider
       value={{
@@ -240,6 +292,9 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
         addReview,
         fetchReviews,
         isClinicOpen,
+        saveClinic,
+        fetchSavedClinics, 
+        removeSavedClinic
       }}
     >
       {children}

@@ -1,13 +1,15 @@
 import { useEffect} from "react";
 import { useParams } from "react-router-dom";
 import { Review, useClinics } from "../contexts/ClinicsContext";
-import { Flex, List, Spin } from "antd";
+import { Button, Flex, List, message, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { AddReviewsModal } from "../components/AddReviewsModal";
+import { useAuth } from "../contexts/AuthContext";
 
 export const VetDetailPage = () => {
   const { id } = useParams();
-  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen } =
+  const {user} = useAuth();
+  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen, saveClinic, removeSavedClinic } =
     useClinics();
   const { t, i18n } = useTranslation();
 
@@ -38,12 +40,45 @@ export const VetDetailPage = () => {
     return <p>{t("clinic_not_found")}</p>;
   }
 
+const handleSaveClinic = async () => {
+  if (!user?.id || !id) {
+    return message.error(t("clinic_save_fail"));
+  }
+  try {
+    await saveClinic(user.id, id);
+    message.success(t("clinic_saved"));
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data.error === "Clinic is already saved"
+        ? t("clinic_already_saved")
+        : error.response?.status === 404
+          ? t("user_not_found")
+          : t("clinic_save_fail");
+
+    message.error(errorMessage);
+  }
+};
+
+const handleRemoveClinic = async() => {
+  if(!user?.id || !id) {
+    return message.error(t("clinic_removed_fail"))
+  }
+  try {
+    await removeSavedClinic(user.id, id);
+    message.success(t("clinic_removed"));
+  }catch(error) {
+    message.error(t("clinic_removed_fail"))
+  }
+}
+
   const openingHours =
     clinic.openinghours?.[i18n.language] ?? clinic.openinghours?.["sv"] ?? [];
 
   return (
     <div>
       <h2>{clinic.name}</h2>
+      <Button onClick={handleSaveClinic}>{t("save_clinic_btn")}</Button>
+      <Button onClick={handleRemoveClinic}>{t("remove_clinic_btn")}</Button>
       <p>
         {(() => {
           const clinicOpen = isClinicOpen(openingHours);
