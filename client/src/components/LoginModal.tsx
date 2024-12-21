@@ -33,9 +33,9 @@ export const LoginModal = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <span onClick={showModal}>
         {t("login")}
-      </Button>
+      </span>
       <Modal
         title="Login"
         open={open}

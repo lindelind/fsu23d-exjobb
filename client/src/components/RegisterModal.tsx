@@ -44,9 +44,9 @@ export const RegisterModal = () => {
 
   return (
     <>
-      <Button type="default" onClick={showModal}>
+      <span onClick={showModal}>
         {t("register")}
-      </Button>
+      </span>
       <Modal
         title={t("register")}
         open={open}
