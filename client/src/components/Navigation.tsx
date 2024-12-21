@@ -106,6 +106,7 @@ export const Navigation = () => {
           mode="inline"
           selectedKeys={[selectedKey]}
           className="app-menu"
+          onClick={() => setOpen(false)}
           items={items}
         />
       </Drawer>
