@@ -86,5 +86,7 @@
   "review_submitted": "Recension skickad!",
   "review_failed": "Det gick inte att skicka recensionen.",
   "no_reviews": "Det finns inga recensioner för denna kliniken.",
-  "login_required": "Du måste vara inloggad för att lämna en recension."
+  "login_required": "Du måste vara inloggad för att lämna en recension.",
+
+  "menu": "Meny"
 }

@@ -96,7 +96,7 @@ export const Navigation = () => {
         }}
       />
       <Drawer
-        title={t("Menu")}
+        title={t("menu")}
         placement="left"
         onClose={toggleDrawer}
         open={open}

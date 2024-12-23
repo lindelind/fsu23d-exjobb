@@ -1,5 +1,5 @@
 import i18n from "../i18n";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { useState } from "react";
 
 export const ChangeLanguage = () => {
@@ -10,6 +10,7 @@ export const ChangeLanguage = () => {
     i18n.changeLanguage(language);
 
     setCurrentLang(language);
+    message.success("Language set to: " + language)
   };
 
   return (
