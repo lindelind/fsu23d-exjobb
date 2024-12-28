@@ -4,6 +4,11 @@ import { db } from "../firebase/firebase";
 import { Clinic } from "../types/types";
 const path = require("path");
 
+const getCurrentDateFileName = (): string => {
+  const today = new Date().toISOString().split("T")[0];
+  return `clinics_${today}.json`;
+};
+
 const readJSONFile = (filePath: string) => {
   if (!fs.existsSync(filePath)) {
     console.error("JSON-fil hittades inte:", filePath);
@@ -75,7 +80,7 @@ const compareAndUpdateClinics = async (
   );
 };
 
-const jsonFilePath = path.resolve(__dirname, "clinics_2024-12-03.json"); 
+const jsonFilePath = path.resolve(__dirname, getCurrentDateFileName()); 
 const collectionName = "testClinics"; 
 
 (async () => {
