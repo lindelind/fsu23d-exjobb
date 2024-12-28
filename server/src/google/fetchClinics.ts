@@ -149,7 +149,7 @@ const fetchVeterinaryClinicsByCity = async (
 
 const generateNewClinicsFile = async (locations:any) => {
   const timestamp = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-  const fileName = `clinics_${timestamp}.json`;
+  const fileName = `src/google/clinics_${timestamp}.json`;
 
   const allClinics = new Map();
 
