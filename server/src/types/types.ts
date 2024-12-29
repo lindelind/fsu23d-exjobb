@@ -31,6 +31,8 @@ export interface AddressComponent {
 }
 
 export interface PlaceDetails {
+  user_ratings_total: number;
+  rating: number;
   place_id: string;
   name: string;
   formatted_address: string;

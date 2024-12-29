@@ -43,8 +43,9 @@ const fetchVeterinaryClinicsByCity = async (
 
       for (const place of places) {
         if (!allClinics.has(place.place_id)) {
-          const detailsSvUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id&key=${GOOGLE_API_KEY}&language=sv`;
-          const detailsEnUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id&key=${GOOGLE_API_KEY}&language=en`;
+          const detailsSvUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id,rating,user_ratings_total&key=${GOOGLE_API_KEY}&language=sv`;
+          const detailsEnUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id,rating,user_ratings_total&key=${GOOGLE_API_KEY}&language=en`;
+
 
           const [detailsSvResponse, detailsEnResponse] = await Promise.all([
             axios.get(detailsSvUrl),
@@ -123,7 +124,9 @@ const fetchVeterinaryClinicsByCity = async (
               sv: formattedOpeningHoursSv,
               en: detailsEn.opening_hours?.weekday_text || null,
             },
-          });
+          rating: detailsSv.rating || null,
+          user_ratings_total: detailsSv.user_ratings_total || 0,
+        });
         }
       }
 
