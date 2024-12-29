@@ -45,56 +45,56 @@ export const client = new Typesense.Client({
 //     console.error("Error creating collection:", error);
 //   });
 
-const clinicDocument = {
-  id: "ChIJrbuW1X61YEYRmvipCTVj64Q",
-  name: "Evidensia Djurkliniken Sandviken",
-  rating: 4.3,
-  address: {
-    streetAddress: "Länsmansvägen 5",
-    zip: "811 35",
-    city: "Sandviken",
-    län: "Gävleborgs län",
-    country: "Sverige",
-  },
-  coordinates: {
-    lat: 60.6401863,
-    long: 16.7928408,
-  },
-  formatted_address: "Länsmansvägen 5, 811 35 Sandviken, Sverige",
-  phone_number: "",
-  website:
-    "http://evidensia.se/klinik/evidensia-djurkliniken-sandviken/?utm_source=places&utm_medium=organic&utm_campaign=gmb",
-  openinghours: {
-    sv: [
-      "måndag: 08:00–17:00",
-      "tisdag: 08:00–17:00",
-      "onsdag: 08:00–17:00",
-      "torsdag: 08:00–17:00",
-      "fredag: 08:00–17:00",
-      "lördag: Stängt",
-      "söndag: Stängt",
-    ],
-    en: [
-      "Monday: 8:00 AM – 5:00 PM",
-      "Tuesday: 8:00 AM – 5:00 PM",
-      "Wednesday: 8:00 AM – 5:00 PM",
-      "Thursday: 8:00 AM – 5:00 PM",
-      "Friday: 8:00 AM – 5:00 PM",
-      "Saturday: Closed",
-      "Sunday: Closed",
-    ],
-  },
-}
-  // Lägg till dokument i clinics
-  client
-    .collections("clinics")
-    .documents()
-    .import(JSON.stringify(clinicDocument))
-    .then(function (result: any) {
-      console.log("Documents imported:", result);
-    })
-    .catch(function (error: any) {
-      console.error("Error importing documents:", error);
-    });
+// const clinicDocument = {
+//   id: "ChIJrbuW1X61YEYRmvipCTVj64Q",
+//   name: "Evidensia Djurkliniken Sandviken",
+//   rating: 4.3,
+//   address: {
+//     streetAddress: "Länsmansvägen 5",
+//     zip: "811 35",
+//     city: "Sandviken",
+//     län: "Gävleborgs län",
+//     country: "Sverige",
+//   },
+//   coordinates: {
+//     lat: 60.6401863,
+//     long: 16.7928408,
+//   },
+//   formatted_address: "Länsmansvägen 5, 811 35 Sandviken, Sverige",
+//   phone_number: "",
+//   website:
+//     "http://evidensia.se/klinik/evidensia-djurkliniken-sandviken/?utm_source=places&utm_medium=organic&utm_campaign=gmb",
+//   openinghours: {
+//     sv: [
+//       "måndag: 08:00–17:00",
+//       "tisdag: 08:00–17:00",
+//       "onsdag: 08:00–17:00",
+//       "torsdag: 08:00–17:00",
+//       "fredag: 08:00–17:00",
+//       "lördag: Stängt",
+//       "söndag: Stängt",
+//     ],
+//     en: [
+//       "Monday: 8:00 AM – 5:00 PM",
+//       "Tuesday: 8:00 AM – 5:00 PM",
+//       "Wednesday: 8:00 AM – 5:00 PM",
+//       "Thursday: 8:00 AM – 5:00 PM",
+//       "Friday: 8:00 AM – 5:00 PM",
+//       "Saturday: Closed",
+//       "Sunday: Closed",
+//     ],
+//   },
+// }
+//   // Lägg till dokument i clinics
+//   client
+//     .collections("clinics")
+//     .documents()
+//     .import(JSON.stringify(clinicDocument))
+//     .then(function (result: any) {
+//       console.log("Documents imported:", result);
+//     })
+//     .catch(function (error: any) {
+//       console.error("Error importing documents:", error);
+//     });
 
 
