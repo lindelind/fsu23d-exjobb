@@ -4,14 +4,12 @@ client
   .collections("clinics")
   .documents()
   .search({
-    q: "smådjur",
+    q: "sandviken",
     query_by: "name",
   })
   .then((result: any) => {
     result.hits.forEach((hit: any) => {
-      console.log(
-        `Name: ${hit.document.name}, Address: ${hit.document.address.city}`
-      );
+      console.log("Clinic:", hit.document);
     });
   })
   .catch(console.error);
