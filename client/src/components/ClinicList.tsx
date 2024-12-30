@@ -6,15 +6,14 @@ import { useTranslation } from "react-i18next";
 export const ClinicList = () => {
   const { clinics, isClinicOpen } = useClinics();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t} = useTranslation();
 
  const sortedClinics = clinics
    .map((clinic) => {
-     const openingHours =
-       clinic.openinghours?.[i18n.language] ??
-       clinic.openinghours?.["sv"] ??
-       [];
-     return { ...clinic, isOpen: isClinicOpen(openingHours) };
+    
+       const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
+         isClinicOpen(openingHoursCheck);
+     return { ...clinic, isOpen: isClinicOpen(openingHoursCheck) };
    })
    .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));
 

@@ -2,7 +2,14 @@ import axios from "axios";
 import React, { createContext, useCallback, useContext, useState } from "react";
 
 export interface Clinic {
-  openinghours?: { [key: string]: string[] } | null;
+ openinghours?: { [key: string]: {
+    weekday_text: string[];
+    periods?: {
+      close: { day: number; time: string };
+      open: { day: number; time: string };
+    }[];
+  };
+} | null,
   id: string;
   name: string;
   address: {
@@ -38,7 +45,15 @@ interface ClinicsContextProps {
   fetchById: (id: string) => Promise<void>;
   addReview: (review: Review) => Promise<void>;
   fetchReviews: (clinicId: string) => Promise<void>;
-  isClinicOpen: (openinghours: string[] | null) => boolean;
+  isClinicOpen: (
+    openinghours:
+      | {
+          open: { day: number; time: string };
+          close: { day: number; time: string };
+        }[]
+      | null
+  ) => boolean;
+
   saveClinic: (id: string, clinicId: string) => Promise<void>;
   removeSavedClinic: (id: string, clinicId: string) => Promise<void>;
   fetchSavedClinics: (id: string) => Promise<void>;
@@ -154,7 +169,6 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-
   const fetchSavedClinics = useCallback(async (userId: string) => {
     try {
       setLoading(true);
@@ -177,107 +191,61 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
 
+ const isClinicOpen = (
+   openingHoursPeriods:
+     | {
+         open: { day: number; time: string };
+         close: { day: number; time: string };
+       }[]
+     | null
+ ): boolean => {
+   if (!Array.isArray(openingHoursPeriods) || openingHoursPeriods.length === 0) {
+     return false;
+   }
 
-  const isClinicOpen = (openinghours: string[] | null): boolean => {
-    if (!openinghours?.length) {
-      return false;
+   const currentDay = new Date().getDay();
+   const currentTime = new Date();
+   const currentTimeString = `${currentTime.getHours()}${String(currentTime.getMinutes()).padStart(2, "0")}`; // Exempel: "0830"
+
+   for (let period of openingHoursPeriods) {
+     if (
+       (period.open.day === currentDay || period.close.day === currentDay) &&
+       currentTimeString >= period.open.time &&
+       currentTimeString <= period.close.time
+     ) {
+       return true;
+     }
+   }
+
+   return false;
+ };
+
+
+
+  const saveClinic = async (id: string, clinicId: string) => {
+    try {
+      setLoading(true);
+      await axios.post(`${API_URL}/save-clinic`, { id, clinicId });
+      console.log("Clinic saved successfully!");
+    } catch (error) {
+      console.error("Error saving clinic:", error);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-
-    const now = new Date();
-    const currentHours = now.getHours();
-    const currentMinutes = now.getMinutes();
-    const currentDay = now
-      .toLocaleDateString("en-US", { weekday: "long" })
-      .toLowerCase();
-
-    const days: Record<string, string> = {
-      monday: "måndag",
-      tuesday: "tisdag",
-      wednesday: "onsdag",
-      thursday: "torsdag",
-      friday: "fredag",
-      saturday: "lördag",
-      sunday: "söndag",
-    };
-
-    const todayHours = openinghours.find((openhours) => {
-      const day = openhours.split(":")[0].toLowerCase();
-      return day === currentDay || day === days[currentDay];
-    });
-
-
-    if (!todayHours) {
-      return false;
-    }
-
-    const timePeriods = todayHours.replace(/^[^:]+:\s*/, "").split(/,\s*/);
- 
-
-    const status = timePeriods[0].toLowerCase();
-    if (["closed", "stängt"].includes(status)) {
-      return false;
-    }
-    if (["open 24 hours", "öppet dygnet runt"].includes(status)) {
-      return true;
-    }
-
-    const parseTime = (time: string): { hours: number; minutes: number } => {
-      const timeMatch = time.match(/(\d{1,2}):(\d{2})\s?(AM|PM)?/i);
-      if (!timeMatch) {
-        console.error(`Invalid time format: ${time}`);
-        throw new Error(`Invalid time format: ${time}`);
-      }
-
-      let [hours, minutes] = timeMatch.slice(1, 3).map(Number);
-      const period = timeMatch[3]?.toUpperCase();
-
-      if (period === "PM" && hours !== 12) hours += 12;
-      if (period === "AM" && hours === 12) hours = 0;
-      return { hours, minutes };
-    };
-
-    const isOpen = timePeriods.some((period) => {
-      const [open, close] = period
-        .split("–")
-        .map((time) => parseTime(time.trim()));
-
-      
-      if (currentHours > open.hours && currentHours < close.hours) return true;
-      if (currentHours === open.hours && currentMinutes >= open.minutes)
-        return true;
-      if (currentHours === close.hours && currentMinutes <= close.minutes)
-        return true;
-
-      return false;
-    });
-    return isOpen;
   };
 
- const saveClinic = async (id: string, clinicId: string) => {
-   try {
-     setLoading(true);
-     await axios.post(`${API_URL}/save-clinic`, {id, clinicId });
-     console.log("Clinic saved successfully!");
-   } catch (error) {
-     console.error("Error saving clinic:", error);
-     throw error;
-   } finally {
-     setLoading(false);
-   }
- };
-
- const removeSavedClinic = async (id: string, clinicId: string) => {
-   try {
-     setLoading(true);
-     await axios.post(`${API_URL}/remove-saved-clinic`, { id, clinicId });
-     console.log("Clinic removed successfully!");
-   } catch (error) {
-     console.error("Error removing clinic:", error);
-   } finally {
-     setLoading(false);
-   }
- };
-
+  const removeSavedClinic = async (id: string, clinicId: string) => {
+    try {
+      setLoading(true);
+      await axios.post(`${API_URL}/remove-saved-clinic`, { id, clinicId });
+      console.log("Clinic removed successfully!");
+    } catch (error) {
+      console.error("Error removing clinic:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <ClinicsContext.Provider

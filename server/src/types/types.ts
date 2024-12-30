@@ -46,6 +46,10 @@ export interface PlaceDetails {
   website?: string;
   opening_hours?: {
     weekday_text: string[];
+    periods: {
+      open: { day: number; time: string };
+      close: { day: number; time: string };
+    }[];
   };
   address_components?: AddressComponent[];
 }

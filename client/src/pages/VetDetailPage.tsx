@@ -72,7 +72,7 @@ const handleRemoveClinic = async() => {
 }
 
   const openingHours =
-    clinic.openinghours?.[i18n.language] ?? clinic.openinghours?.["sv"] ?? [];
+    clinic.openinghours?.[i18n.language].weekday_text ?? clinic.openinghours?.["sv"].weekday_text ?? [];
 
   return (
     <div>
@@ -81,7 +81,9 @@ const handleRemoveClinic = async() => {
       <Button onClick={handleRemoveClinic}>{t("remove_clinic_btn")}</Button>
       <p>
         {(() => {
-          const clinicOpen = isClinicOpen(openingHours);
+         const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
+         const clinicOpen = isClinicOpen(openingHoursCheck);
+
           return (
             <span style={{ color: clinicOpen ? "green" : "red" }}>
               {clinicOpen ? t("open") : t("closed")}
