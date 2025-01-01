@@ -31,6 +31,8 @@ export interface AddressComponent {
 }
 
 export interface PlaceDetails {
+  user_ratings_total: number;
+  rating: number;
   place_id: string;
   name: string;
   formatted_address: string;
@@ -44,6 +46,10 @@ export interface PlaceDetails {
   website?: string;
   opening_hours?: {
     weekday_text: string[];
+    periods: {
+      open: { day: number; time: string };
+      close: { day: number; time: string };
+    }[];
   };
   address_components?: AddressComponent[];
 }

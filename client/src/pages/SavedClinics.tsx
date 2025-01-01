@@ -10,7 +10,7 @@ export const SavedClinics = () => {
   const { clinics, fetchSavedClinics, loading, isClinicOpen } = useClinics();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user?.id) {
@@ -36,11 +36,8 @@ export const SavedClinics = () => {
 
   const sortedClinics = clinics
     .map((clinic) => {
-      const openingHours =
-        clinic.openinghours?.[i18n.language] ??
-        clinic.openinghours?.["sv"] ??
-        [];
-      return { ...clinic, isOpen: isClinicOpen(openingHours) };
+      const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
+      return { ...clinic, isOpen: isClinicOpen(openingHoursCheck) };
     })
     .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));
 
@@ -61,7 +58,7 @@ export const SavedClinics = () => {
               <p>
                 <strong>{t("clinic_address")}:</strong>{" "}
                 <a
-                  href={`https://www.google.com/maps?q=${clinic.coordinates.lat},${clinic.coordinates.long}`}
+                  href={`https://www.google.com/maps?q=${clinic.coordinates?.lat},${clinic.coordinates?.long}`}
                   target="_blank"
                 >
                   {clinic.formatted_address}
