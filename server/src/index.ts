@@ -6,6 +6,8 @@ import petFirstAidRouter from "./firebase/Pet First Aid/petFirstAid.router";
 import usersRouter from "./firebase/Users/users.router";
 import clinicsRouter from "./firebase/Clinics/clinics.router";
 import reviewRoutes from "./firebase/Reviews/reviews.router";
+// import { exec } from "child_process";
+// const cron = require("node-cron");
 
 const app = express();
 
@@ -59,6 +61,33 @@ app.use("/api", petFirstAidRouter);
 app.use("/api", usersRouter);
 app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
+
+
+// cron.schedule('0 13 2 */2 *', {
+//   scheduled: true,
+//   timezone: "Europe/Stockholm" }, () => {
+//   // Kör klockan 13 den 2:a i varannan månad(start 2 januari)
+//   console.log("Starting fetchClinics...");
+//   exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
+//     if (error) {
+//       console.error("Error during fetchClinics:", error);
+//       return;
+//     }
+//     console.log("fetchClinics completed:", result);
+
+//     console.log("Starting uploadClinics...");
+//     exec(
+//       "npx ts-node ./src/google/uploadClinics.ts",
+//       (uploadError, uploadResult) => {
+//         if (uploadError) {
+//           console.error("Error during uploadClinics:", uploadError);
+//           return;
+//         }
+//         console.log("uploadClinics completed:", uploadResult);
+//       }
+//     );
+//   });
+// });
 
 
 const port = 3000;

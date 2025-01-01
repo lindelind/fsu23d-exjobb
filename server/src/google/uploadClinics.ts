@@ -5,6 +5,11 @@ import { Clinic } from "../types/types";
 import { client } from "../typesense/client";
 const path = require("path");
 
+const getCurrentDateFileName = (): string => {
+  const today = new Date().toISOString().split("T")[0];
+  return `clinics_${today}.json`;
+};
+
 const readJSONFile = (filePath: string) => {
   if (!fs.existsSync(filePath)) {
     console.error("JSON-fil hittades inte:", filePath);
@@ -115,7 +120,8 @@ const compareAndUpdateClinics = async (
   return newClinics;
 };
 
-const jsonFilePath = path.resolve(__dirname, "clinics_2025-01-01.json"); 
+
+const jsonFilePath = path.resolve(__dirname, getCurrentDateFileName()); 
 const collectionName = "testClinics"; 
 (async () => {
   const newClinics = await compareAndUpdateClinics(
