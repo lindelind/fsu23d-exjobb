@@ -63,10 +63,10 @@ app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
 
 
-// cron.schedule('0 13 1 */2 *', {
+// cron.schedule('0 13 2 */2 *', {
 //   scheduled: true,
 //   timezone: "Europe/Stockholm" }, () => {
-//   // Kör klockan 13 den 1:a i varannan månad(start 1 januari)
+//   // Kör klockan 13 den 2:a i varannan månad(start 2 januari)
 //   console.log("Starting fetchClinics...");
 //   exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
 //     if (error) {
