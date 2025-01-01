@@ -22,7 +22,8 @@ export interface Clinic {
   formatted_address: string;
   phone_number: string | null;
   website: string | null;
-  coordinates: {
+  rating: number;
+  coordinates?: {
     lat: number;
     long: number;
   };

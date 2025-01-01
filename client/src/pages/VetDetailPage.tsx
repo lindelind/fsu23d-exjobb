@@ -94,7 +94,7 @@ const handleRemoveClinic = async() => {
       <p>
         <strong>{t("clinic_address")}:</strong>{" "}
         <a
-          href={`https://www.google.com/maps?q=${clinic.coordinates.lat},${clinic.coordinates.long}`}
+          href={`https://www.google.com/maps?q=${clinic.coordinates?.lat},${clinic.coordinates?.long}`}
           target="_blank"
         >
           {clinic.formatted_address}
