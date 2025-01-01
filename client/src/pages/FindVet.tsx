@@ -1,6 +1,6 @@
 import { ClinicList } from "../components/ClinicList";
 import { useClinics } from "../contexts/ClinicsContext";
-import {Spin, Pagination } from "antd";
+import {Spin } from "antd";
 import { SearchVet } from "../components/SearchVet";
 import { useTranslation } from "react-i18next";
 
@@ -21,7 +21,6 @@ export const FindVet = () => {
       {!loading && clinics.length > 0 && (
         <>
           <ClinicList />
-          <Pagination />
         </>
       )}
     </>

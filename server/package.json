@@ -17,7 +17,8 @@
     "express": "^4.21.2",
     "firebase-admin": "^13.0.1",
     "haversine-distance": "^1.2.3",
-    "ts-node": "^10.0.0"
+    "ts-node": "^10.0.0",
+    "typesense": "^1.8.2"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.8",

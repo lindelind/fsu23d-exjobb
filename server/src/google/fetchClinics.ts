@@ -43,8 +43,9 @@ const fetchVeterinaryClinicsByCity = async (
 
       for (const place of places) {
         if (!allClinics.has(place.place_id)) {
-          const detailsSvUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id&key=${GOOGLE_API_KEY}&language=sv`;
-          const detailsEnUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id&key=${GOOGLE_API_KEY}&language=en`;
+          const detailsSvUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id,rating,user_ratings_total&key=${GOOGLE_API_KEY}&language=sv`;
+          const detailsEnUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,formatted_address,geometry,international_phone_number,website,opening_hours,address_component,place_id,rating,user_ratings_total&key=${GOOGLE_API_KEY}&language=en`;
+
 
           const [detailsSvResponse, detailsEnResponse] = await Promise.all([
             axios.get(detailsSvUrl),
@@ -73,6 +74,9 @@ const fetchVeterinaryClinicsByCity = async (
               capitalizeFirstLetter(entry)
             ) || null;
 
+            const openingHoursPeriodsSv =
+              detailsSv.opening_hours?.periods || null;
+
           const addressComponents = detailsSv.address_components || [];
           const formattedAddress: FormattedAddress = {
             streetAddress: (() => {
@@ -95,15 +99,15 @@ const fetchVeterinaryClinicsByCity = async (
             city:
               addressComponents.find((component) =>
                 component.types.includes("postal_town")
-              )?.long_name || null,
+              )?.long_name || "",
             län:
               addressComponents.find((component) =>
                 component.types.includes("administrative_area_level_1")
-              )?.long_name || null,
+              )?.long_name || "",
             country:
               addressComponents.find((component) =>
                 component.types.includes("country")
-              )?.long_name || null,
+              )?.long_name || "",
           };
 
           allClinics.set(place.place_id, {
@@ -117,12 +121,20 @@ const fetchVeterinaryClinicsByCity = async (
                 }
               : { lat: null, long: null },
             formatted_address: detailsSv.formatted_address,
-            phone_number: detailsSv.international_phone_number || null,
-            website: detailsSv.website || null,
+            phone_number: detailsSv.international_phone_number || "",
+            website: detailsSv.website || "",
             openinghours: {
-              sv: formattedOpeningHoursSv,
-              en: detailsEn.opening_hours?.weekday_text || null,
+              sv: {
+                weekday_text: formattedOpeningHoursSv,
+                periods: openingHoursPeriodsSv,
+              },
+              en: {
+                weekday_text: detailsEn.opening_hours?.weekday_text || null,
+                
+              },
             },
+            rating: detailsSv.rating || null,
+            user_ratings_total: detailsSv.user_ratings_total || 0,
           });
         }
       }
