@@ -1,29 +1,44 @@
-import { List } from "antd";
+import { List, Pagination, Rate } from "antd";
 import { useClinics } from "../contexts/ClinicsContext";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 export const ClinicList = () => {
   const { clinics, isClinicOpen } = useClinics();
   const navigate = useNavigate();
-  const { t} = useTranslation();
+  const { t } = useTranslation();
 
- const sortedClinics = clinics
-   .map((clinic) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
+  const sortedClinics = clinics
+    .map((clinic) => {
     
-       const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
-         isClinicOpen(openingHoursCheck);
-     return { ...clinic, isOpen: isClinicOpen(openingHoursCheck) };
-   })
-   .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));
+      const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
+      isClinicOpen(openingHoursCheck);
+      return { ...clinic, isOpen: isClinicOpen(openingHoursCheck) };
+    })
+    .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const paginatedClinics = sortedClinics.slice(
+    startIndex,
+    startIndex + pageSize
+  );
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
 
   return (
-    <List
-      bordered
-      size="small"
-      dataSource={sortedClinics}
-      renderItem={(clinic) => {
-        return (
+    <>
+      <List
+        bordered
+        size="small"
+        dataSource={paginatedClinics}
+        renderItem={(clinic) => (
           <List.Item
             key={clinic.id}
             style={{ cursor: "pointer" }}
@@ -31,10 +46,11 @@ export const ClinicList = () => {
           >
             <div>
               <h3>{clinic.name}</h3>
+              <p>{clinic.rating}</p><Rate disabled allowHalf defaultValue={clinic.rating} />
               <p>
                 <strong>{t("clinic_address")}:</strong>{" "}
                 <a
-                  href={`https://www.google.com/maps?q=${clinic.coordinates.lat},${clinic.coordinates.long}`}
+                  href={`https://www.google.com/maps?q=${clinic.coordinates?.lat},${clinic.coordinates?.long}`}
                   target="_blank"
                 >
                   {clinic.formatted_address}
@@ -74,8 +90,18 @@ export const ClinicList = () => {
               </p>
             </div>
           </List.Item>
-        );
-      }}
-    />
+        )}
+      />
+     
+      <Pagination
+        current={currentPage}
+        pageSize={pageSize}
+        total={sortedClinics.length}
+        onChange={handlePageChange}
+        showSizeChanger
+        onShowSizeChange={handlePageChange}
+        style={{ marginTop: "16px", textAlign: "center" }}
+      />
+    </>
   );
 };
