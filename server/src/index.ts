@@ -69,7 +69,7 @@ cron.schedule("35 12 * * *", () => {
 
 // Schemalägg jobbet
 cron.schedule(
-  "10 13 2 */2 *", // Cron-uttryck: kör 13:00 den 2:a i varannan månad
+  "25 13 * * *", 
   () => {
     console.log("Starting fetchClinics...");
     exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
