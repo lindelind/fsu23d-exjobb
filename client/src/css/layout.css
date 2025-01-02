@@ -10,3 +10,40 @@
 .app-footer {
   text-align: center;
 }
+
+.banner-image {
+  width: 100%;
+  min-width: 300px;
+  height: auto;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+
+.content-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 80%;
+}
+
+.banner-text {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+input, select, option {
+  width: 300px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+}
