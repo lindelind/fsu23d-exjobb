@@ -1,12 +1,16 @@
+
 import { SearchVet } from "../components/SearchVet";
 import "../css/layout.css";
 import { Content } from "antd/es/layout/layout";
+import { useTranslation } from "react-i18next";
 
 export const Home = () => {
   const contentStyle: React.CSSProperties = {
     height: "100%",
     position: "relative",
   };
+
+  const {t} = useTranslation();
 
   return (
     <>
@@ -19,7 +23,7 @@ export const Home = () => {
         <div style={contentStyle}>
           <img className="banner-image" src="/1.png" alt="Banner" />
           <div className="content-overlay">
-            <h1 className="banner-text">Welcome to Vet Finder</h1>
+            <h1 className="banner-text">{t("welcome_text")}</h1>
             <SearchVet />
           </div>
         </div>
