@@ -206,7 +206,8 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
 
    const currentDay = new Date().getDay();
    const currentTime = new Date();
-   const currentTimeString = `${currentTime.getHours()}${String(currentTime.getMinutes()).padStart(2, "0")}`; // Exempel: "0830"
+  const currentTimeString = `${String(currentTime.getHours()).padStart(2, "0")}${String(currentTime.getMinutes()).padStart(2, "0")}`;
+
 
    for (let period of openingHoursPeriods) {
      if (
