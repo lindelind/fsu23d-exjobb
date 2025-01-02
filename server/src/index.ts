@@ -69,7 +69,7 @@ cron.schedule("35 12 * * *", () => {
 
 // Schemalägg jobbet
 cron.schedule(
-  "0 13 2 */2 *", // Cron-uttryck: kör 13:00 den 2:a i varannan månad
+  "10 13 2 */2 *", // Cron-uttryck: kör 13:00 den 2:a i varannan månad
   () => {
     console.log("Starting fetchClinics...");
     exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
@@ -92,10 +92,6 @@ cron.schedule(
       );
     });
   },
-  {
-    scheduled: true,
-    timezone: "Europe/Stockholm", // Tidszon för att köra enligt lokal tid
-  }
 );
 
 
