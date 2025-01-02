@@ -4,6 +4,8 @@ import { useClinics } from "../contexts/ClinicsContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import EnvironmentOutlined from "@ant-design/icons/lib/icons/EnvironmentOutlined";
+import PhoneOutlined from "@ant-design/icons/lib/icons/PhoneOutlined";
 
 export const SavedClinics = () => {
 
@@ -56,7 +58,9 @@ export const SavedClinics = () => {
             <div>
               <h3>{clinic.name}</h3>
               <p>
-                <strong>{t("clinic_address")}:</strong>{" "}
+                <strong>
+                  <EnvironmentOutlined style={{ fontSize: "20px" }} />
+                </strong>{" "}
                 <a
                   href={`https://www.google.com/maps?q=${clinic.coordinates?.lat},${clinic.coordinates?.long}`}
                   target="_blank"
@@ -65,7 +69,9 @@ export const SavedClinics = () => {
                 </a>
               </p>
               <p>
-                <strong>{t("clinic_phone")}:</strong>{" "}
+                <strong>
+                  <PhoneOutlined style={{ fontSize: "20px" }} />
+                </strong>{" "}
                 {clinic.phone_number ? (
                   <a href={`tel:${clinic.phone_number}`}>
                     {clinic.phone_number}
@@ -75,7 +81,9 @@ export const SavedClinics = () => {
                 )}
               </p>
               <p>
-                <strong>{t("clinic_website")}:</strong>{" "}
+                <strong>
+                  <img src="/website.png" alt="" width={"24px"} />
+                </strong>{" "}
                 {clinic.website ? (
                   <a
                     href={clinic.website}
