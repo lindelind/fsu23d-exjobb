@@ -122,7 +122,7 @@ const compareAndUpdateClinics = async (
 
 
 const jsonFilePath = path.resolve(__dirname, getCurrentDateFileName()); 
-const collectionName = "testClinics"; 
+const collectionName = "vetClinics"; 
 (async () => {
   const newClinics = await compareAndUpdateClinics(
     jsonFilePath,
