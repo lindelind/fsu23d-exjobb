@@ -3,6 +3,8 @@ import { useClinics } from "../contexts/ClinicsContext";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import PhoneOutlined from "@ant-design/icons/lib/icons/PhoneOutlined";
+import EnvironmentOutlined from "@ant-design/icons/lib/icons/EnvironmentOutlined";
 
 export const ClinicList = () => {
   const { clinics, isClinicOpen } = useClinics();
@@ -48,7 +50,9 @@ export const ClinicList = () => {
               <h3>{clinic.name}</h3>
               <Rate disabled allowHalf defaultValue={clinic.rating} />
               <p>
-                <strong>{t("clinic_address")}:</strong>{" "}
+                <strong>
+                  <EnvironmentOutlined style={{ fontSize: "20px" }} />
+                </strong>{" "}
                 <a
                   href={`https://www.google.com/maps?q=${clinic.coordinates?.lat},${clinic.coordinates?.long}`}
                   target="_blank"
@@ -57,7 +61,9 @@ export const ClinicList = () => {
                 </a>
               </p>
               <p>
-                <strong>{t("clinic_phone")}:</strong>{" "}
+                <strong>
+                  <PhoneOutlined style={{ fontSize: "20px" }} />
+                </strong>{" "}
                 {clinic.phone_number ? (
                   <a href={`tel:${clinic.phone_number}`}>
                     {clinic.phone_number}
@@ -67,7 +73,7 @@ export const ClinicList = () => {
                 )}
               </p>
               <p>
-                <strong>{t("clinic_website")}:</strong>{" "}
+                <strong><img src="/website.png" alt="" width={"24px"} /></strong>{" "}
                 {clinic.website ? (
                   <a
                     href={clinic.website}
@@ -82,7 +88,10 @@ export const ClinicList = () => {
               </p>
               {clinic.distance && (
                 <p>
-                  <strong>{t("distance")}:</strong> {clinic.distance} km
+                  <strong>
+                   {t("distance")}
+                  </strong>{" "}
+                  {clinic.distance} km
                 </p>
               )}
               <p style={{ color: clinic.isOpen ? "green" : "red" }}>
@@ -92,7 +101,7 @@ export const ClinicList = () => {
           </List.Item>
         )}
       />
-     
+
       <Pagination
         current={currentPage}
         pageSize={pageSize}
