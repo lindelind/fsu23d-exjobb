@@ -7,8 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export const SearchVet = () => {
   const { Option } = Select;
-  const { fetchByCity, fetchByLocation } = useClinics();
-  const [searchType, setSearchType] = useState("city");
+  const { fetchByWildSearch, fetchByLocation } = useClinics();
     const [open, setOpen] = useState(false);
   const  [radius, setRadius] = useState(20);
   const [userLocation, setUserLocation] = useState<{lat: number; long: number;} | null>(null);
@@ -16,11 +15,10 @@ export const SearchVet = () => {
   const {t} = useTranslation();
 
   const onSearch = (value: string) => {
-    if (searchType === "city") {
-      fetchByCity(value);
+      fetchByWildSearch(value);
       navigate("/find-vet-clinic/");
     }
-  };
+  
 
   const getUserLocation = () => {
     if (!navigator.geolocation) {
@@ -61,20 +59,9 @@ export const SearchVet = () => {
   return (
     <>
       <Input.Search
-        placeholder={searchType === "city" ? t("city_search") : "Sök namn"}
+        placeholder={t("wild_search")}
         enterButton={<SearchOutlined />}
         size="large"
-        addonBefore={
-          <Select
-            defaultValue="city"
-            onChange={setSearchType}
-            style={{ width: 80 }}
-          >
-            <Option value="city"> {t("city")}</Option>
-            <Option value="name">{t("name")}</Option>
-            <Option value="län">{t("county")}</Option>
-          </Select>
-        }
         suffix={
           <EnvironmentOutlined
             style={{ cursor: "pointer" }}

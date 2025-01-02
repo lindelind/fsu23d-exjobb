@@ -41,7 +41,7 @@ interface ClinicsContextProps {
   clinics: Clinic[];
   clinic: Clinic | null;
   loading: boolean;
-  fetchByCity: (city?: string) => Promise<void>;
+  fetchByWildSearch: (query?: string) => Promise<void>;
   fetchByLocation: (lat: number, long: number, radius: number) => Promise<void>;
   fetchById: (id: string) => Promise<void>;
   addReview: (review: Review) => Promise<void>;
@@ -81,7 +81,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [clinic, setClinic] = useState<Clinic | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
 
-  const fetchByCity = async (city = "") => {
+  const fetchByWildSearch = async (city = "") => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -256,7 +256,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
         reviews,
         clinic,
         loading,
-        fetchByCity,
+        fetchByWildSearch,
         fetchByLocation,
         fetchById,
         addReview,
