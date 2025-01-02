@@ -62,6 +62,10 @@ app.use("/api", usersRouter);
 app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
 
+//test
+cron.schedule("30 13 * * *", () => {
+  console.log("Cron job triggered at 13:30");
+});
 
 // Schemalägg jobbet
 cron.schedule(
