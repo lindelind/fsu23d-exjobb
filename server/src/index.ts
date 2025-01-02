@@ -62,9 +62,9 @@ app.use("/api", usersRouter);
 app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
 
-// Schemalägg jobbet
+//Cronjobb to fetch and uploadclinics varannan månad
 cron.schedule(
-  "10 14 * * *", 
+  "0 13 2 */2 *",
   () => {
     console.log("Starting fetchClinics...");
     exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
