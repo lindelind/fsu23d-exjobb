@@ -63,31 +63,37 @@ app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
 
 
-cron.schedule('0 13 2 */2 *', {
-  scheduled: true,
-  timezone: "Europe/Stockholm" }, () => {
-  // Kör klockan 13 den 2:a i varannan månad(start 2 januari)
-  console.log("Starting fetchClinics...");
-  exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
-    if (error) {
-      console.error("Error during fetchClinics:", error);
-      return;
-    }
-    console.log("fetchClinics completed:", result);
-
-    console.log("Starting uploadClinics...");
-    exec(
-      "npx ts-node ./src/google/uploadClinics.ts",
-      (uploadError, uploadResult) => {
-        if (uploadError) {
-          console.error("Error during uploadClinics:", uploadError);
-          return;
-        }
-        console.log("uploadClinics completed:", uploadResult);
+// Schemalägg jobbet
+cron.schedule(
+  "0 13 2 */2 *", // Cron-uttryck: kör 13:00 den 2:a i varannan månad
+  () => {
+    console.log("Starting fetchClinics...");
+    exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
+      if (error) {
+        console.error("Error during fetchClinics:", error);
+        return;
       }
-    );
-  });
-});
+      console.log("fetchClinics completed:", result);
+
+      console.log("Starting uploadClinics...");
+      exec(
+        "npx ts-node ./src/google/uploadClinics.ts",
+        (uploadError: any, uploadResult: any) => {
+          if (uploadError) {
+            console.error("Error during uploadClinics:", uploadError);
+            return;
+          }
+          console.log("uploadClinics completed:", uploadResult);
+        }
+      );
+    });
+  },
+  {
+    scheduled: true,
+    timezone: "Europe/Stockholm", // Tidszon för att köra enligt lokal tid
+  }
+);
+
 
 
 const port = 3000;
