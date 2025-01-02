@@ -46,6 +46,7 @@
   "register": "Skapa konto",
   "register_success": "Konto skapat",
   "register_fail": "Fel inträffade vid skapande av konto",
+  "not_logged_in": "Du behöver logga in för att ha tillgång till sidan.",
 
   "city": "Stad",
   "welcome_text": "Välkommen till Hitta Vet",
@@ -71,8 +72,6 @@
   "about_hittavet_text_2": "Appen visar kliniker nära dig och prioriterar öppna kliniker, så att du alltid hittar hjälp när du behöver det.",
   "about_hittavet_text_3": "Genom att skapa ett konto kan du spara dina favoritkliniker och lämna recensioner som andra användare kan läsa.",
   "about_hittavet_text_4": "HittaVet gör det enkelt att få tillgång till rätt vård för ditt djur och dela erfarenheter med andra djurägare.",
-
-
 
   "reviews": "Recensioner",
   "add_review": "Lämna recension",

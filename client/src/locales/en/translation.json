@@ -47,6 +47,7 @@
   "register_success": "Registration successful.",
   "register_fail": "Registration failed.",
   "required_name": "Please enter your name",
+  "not_logged_in": "You need to login to access this page.",
 
   "city": "City",
   "welcome_text": "Welcome to Find Vet",
