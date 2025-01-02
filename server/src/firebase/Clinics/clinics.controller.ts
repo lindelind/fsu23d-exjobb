@@ -142,7 +142,7 @@ const getVetClinicsByWildSearch = async (req: Request, res: Response) => {
       .documents()
       .search({
         q: query,
-        query_by: "address.city, name",
+        query_by: "address.city, name, address.län",
         page,
         per_page: perPage,
       });
