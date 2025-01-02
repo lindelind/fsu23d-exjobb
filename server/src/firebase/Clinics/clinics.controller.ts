@@ -11,7 +11,7 @@ const getVetClinicsByCity = async (req: Request, res: Response) => {
     const city = req.query.city;
 
     const snapshot = await db
-      .collection("testClinics")
+      .collection("vetClinics")
       .where("address.city", "==", city)
       .get();
     const clinics = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
@@ -37,7 +37,7 @@ const getVetClinicsById = async (req:Request, res: Response) => {
     try{
         const id = req.params.id;
         const snapshot = await db
-        .collection("testClinics")
+        .collection("vetClinics")
         .where("id", "==", id)
         .get();
         const clinic = snapshot.docs.map((doc: QueryDocumentSnapshot ) => ({
@@ -92,7 +92,7 @@ const getVetClinicsById = async (req:Request, res: Response) => {
     });
 
 
-     const clinics = db.collection("testClinics");
+     const clinics = db.collection("vetClinics");
      const query = clinics
        .where("coordinates.lat", ">=", minLatitude)
        .where("coordinates.lat", "<=", maxLatitude)
