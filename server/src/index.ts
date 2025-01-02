@@ -63,7 +63,7 @@ app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
 
 //test
-cron.schedule("30 13 * * *", () => {
+cron.schedule("35 12 * * *", () => {
   console.log("Cron job triggered at 13:30");
 });
 
