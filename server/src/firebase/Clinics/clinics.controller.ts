@@ -133,7 +133,7 @@ const getVetClinicsByWildSearch = async (req: Request, res: Response) => {
   try {
     const query = req.query.city as string;
     const page = parseInt(req.query.page as string) || 1; 
-    const perPage = parseInt(req.query.perPage as string) || 5
+    const perPage = parseInt(req.query.perPage as string) || 30
     console.log("Received query:", query);
 
     console.log("Connecting to Typesense...");
