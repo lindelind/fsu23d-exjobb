@@ -62,14 +62,9 @@ app.use("/api", usersRouter);
 app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
 
-//test
-cron.schedule("35 12 * * *", () => {
-  console.log("Cron job triggered at 13:30");
-});
-
 // Schemalägg jobbet
 cron.schedule(
-  "25 13 * * *", 
+  "10 14 * * *", 
   () => {
     console.log("Starting fetchClinics...");
     exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {

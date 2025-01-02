@@ -21,7 +21,7 @@ const fetchVeterinaryClinicsByCoordinates = async (
     let nextPageToken = null;
 
     do {
-      const nearbySearchUrl: any = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=20000&type=veterinary_care&key=${GOOGLE_API_KEY}${
+      const nearbySearchUrl: any = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=50000&type=veterinary_care&key=${GOOGLE_API_KEY}${
         nextPageToken ? `&pagetoken=${nextPageToken}` : ""
       }`;
 
