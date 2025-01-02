@@ -61,15 +61,12 @@
   "findvet-page-title": "Find Vet",
   "findvet-page-intro": "Here you can search for and find contact information for your nearest veterinarian.",
 
-  "days": {
-    "monday": "Monday",
-    "tuesday": "Tuesday",
-    "wednesday": "Wednesday",
-    "thursday": "Thursday",
-    "friday": "Friday",
-    "saturday": "Saturday",
-    "sunday": "Sunday"
-  },
+
+  "about_hittavet_title": "About HittaVet",
+  "about_hittavet_text_1": "HittaVet is a user-friendly app that makes it easy to find veterinary clinics based on name, city, county, or your current location.",
+  "about_hittavet_text_2": "The app shows clinics near you and prioritizes open clinics, so you can always find help when you need it.",
+  "about_hittavet_text_3": "By creating an account, you can save your favorite clinics and leave reviews for other users to read.",
+  "about_hittavet_text_4": "HittaVet makes it easy to access the right care for your pet and share experiences with other pet owners.",
   "opening_hours": "Opening Hours",
   "closed": "CLOSED",
   "open_24_hours": "Open 24 hours",

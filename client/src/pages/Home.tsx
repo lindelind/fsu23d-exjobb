@@ -1,4 +1,3 @@
-
 import { SearchVet } from "../components/SearchVet";
 import "../css/layout.css";
 import { Content } from "antd/es/layout/layout";
@@ -25,6 +24,13 @@ export const Home = () => {
           <div className="content-overlay">
             <h1 className="banner-text">{t("welcome_text")}</h1>
             <SearchVet />
+          </div>
+          <div className="service-description-box">
+            <h2>{t("about_hittavet_title")}</h2>
+            <p>{t("about_hittavet_text_1")}</p>
+            <p>{t("about_hittavet_text_2")}</p>
+            <p>{t("about_hittavet_text_3")}</p>
+            <p>{t("about_hittavet_text_4")}</p>
           </div>
         </div>
       </Content>

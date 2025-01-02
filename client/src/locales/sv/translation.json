@@ -60,20 +60,19 @@
   "findvet-page-title": "Hitta Veterinär",
   "findvet-page-intro": " Här kan du söka och hitta kontaktuppgifter till din närmsta veterinär.",
 
-  "days": {
-    "monday": "Måndag",
-    "tuesday": "Tisdag",
-    "wednesday": "Onsdag",
-    "thursday": "Torsdag",
-    "friday": "Fredag",
-    "saturday": "Lördag",
-    "sunday": "Söndag"
-  },
   "opening_hours": "Öppettider",
   "closed": "STÄNGT",
   "open_24_hours": "Öppet dygnet runt",
   "open": "ÖPPET",
   "no_opening_hours": "Öppettider är inte tillgängliga",
+
+  "about_hittavet_title": "Om Hitta Vet",
+  "about_hittavet_text_1": "HittaVet är en användarvänlig app som gör det enkelt att hitta veterinärkliniker baserat på namn, stad, län eller din nuvarande plats.",
+  "about_hittavet_text_2": "Appen visar kliniker nära dig och prioriterar öppna kliniker, så att du alltid hittar hjälp när du behöver det.",
+  "about_hittavet_text_3": "Genom att skapa ett konto kan du spara dina favoritkliniker och lämna recensioner som andra användare kan läsa.",
+  "about_hittavet_text_4": "HittaVet gör det enkelt att få tillgång till rätt vård för ditt djur och dela erfarenheter med andra djurägare.",
+
+
 
   "reviews": "Recensioner",
   "add_review": "Lämna recension",

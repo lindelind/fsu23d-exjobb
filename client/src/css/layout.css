@@ -3,22 +3,19 @@
 .content-area {
   background: #fff;
   min-height: 580px;
-  padding: 24px;
+  padding: 0px;
 }
 
-/* Footer */
 .app-footer {
   text-align: center;
 }
 
 .banner-image {
   width: 100%;
-  min-width: 300px;
   height: auto;
   object-fit: cover;
   margin: 0 auto;
 }
-
 
 .content-overlay {
   position: absolute;
@@ -30,7 +27,8 @@
   background: rgba(0, 0, 0, 0.3);
   padding: 20px;
   border-radius: 8px;
-  max-width: 80%;
+  max-width: 90%;
+  z-index: 1;
 }
 
 .banner-text {
@@ -39,11 +37,86 @@
   font-weight: bold;
 }
 
-input, select, option {
-  width: 300px;
-  padding: 10px;
+.service-description-box {
+  display: block;
+  background-color: #f8f8f8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+  display: none;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 90%;
+}
+
+.service-description-box h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.service-description-box p {
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-top: 10px;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .banner-image {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .content-overlay {
+    background-color: #78b9f2;
+    position: relative;
+    left: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    transform: none;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input, select {
+    width: 90%;
+    padding: 12px;
+    font-size: 1rem;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .service-description-box {
+    display: block;
+    margin-top: 20px;
+    padding: 15px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .banner-text {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-text {
+    font-size: 1.3rem;
+  }
+
+  .service-description-box h2 {
+    font-size: 1.2rem;
+  }
+
+  .service-description-box p {
+    font-size: 0.9rem;
+  }
 }
