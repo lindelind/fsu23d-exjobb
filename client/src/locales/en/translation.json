@@ -17,7 +17,6 @@
   "no_saved_clinics": "You have no saved clinics.",
   "clinic_already_saved": "This clinic is already saved.",
 
-
   "clinic_not_found": "No clinic found.",
   "location_not_available": "Location info is not available",
   "location_error_message": "Could not fetch location. Please check your settings.",
@@ -50,7 +49,8 @@
   "required_name": "Please enter your name",
 
   "city": "City",
-  "city_search": "Search city",
+  "welcome_text": "Welcome to Find Vet",
+  "wild_search": "Search city, name or county",
   "name": "Name",
   "county": "County",
   "homepage": "Home",

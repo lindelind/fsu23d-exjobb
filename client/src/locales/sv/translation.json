@@ -48,7 +48,8 @@
   "register_fail": "Fel inträffade vid skapande av konto",
 
   "city": "Stad",
-  "city_search": "Sök stad",
+  "welcome_text": "Välkommen till Hitta Vet",
+  "wild_search": "Sök stad, namn eller län",
   "name": "Namn",
   "county": "Län",
   "homepage": "Startsida",

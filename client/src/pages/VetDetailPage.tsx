@@ -5,6 +5,8 @@ import { Button, Flex, List, message, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { AddReviewsModal } from "../components/AddReviewsModal";
 import { useAuth } from "../contexts/AuthContext";
+import EnvironmentOutlined from "@ant-design/icons/lib/icons/EnvironmentOutlined";
+import PhoneOutlined from "@ant-design/icons/lib/icons/PhoneOutlined";
 
 export const VetDetailPage = () => {
   const { id } = useParams();
@@ -81,8 +83,8 @@ const handleRemoveClinic = async() => {
       <Button onClick={handleRemoveClinic}>{t("remove_clinic_btn")}</Button>
       <p>
         {(() => {
-         const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
-         const clinicOpen = isClinicOpen(openingHoursCheck);
+          const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
+          const clinicOpen = isClinicOpen(openingHoursCheck);
 
           return (
             <span style={{ color: clinicOpen ? "green" : "red" }}>
@@ -92,7 +94,10 @@ const handleRemoveClinic = async() => {
         })()}
       </p>
       <p>
-        <strong>{t("clinic_address")}:</strong>{" "}
+        <strong>
+          {" "}
+          <EnvironmentOutlined style={{ fontSize: "20px" }} />
+        </strong>{" "}
         <a
           href={`https://www.google.com/maps?q=${clinic.coordinates?.lat},${clinic.coordinates?.long}`}
           target="_blank"
@@ -101,7 +106,9 @@ const handleRemoveClinic = async() => {
         </a>
       </p>
       <p>
-        <strong>{t("clinic_phone")}:</strong>{" "}
+        <strong>
+          <PhoneOutlined style={{ fontSize: "20px" }} />
+        </strong>{" "}
         {clinic.phone_number ? (
           <a href={`tel:${clinic.phone_number}`}>{clinic.phone_number}</a>
         ) : (
@@ -109,7 +116,9 @@ const handleRemoveClinic = async() => {
         )}
       </p>
       <p>
-        <strong>{t("clinic_website")}:</strong>{" "}
+        <strong>
+          <img src="/website.png" alt="" width={"24px"} />
+        </strong>{" "}
         {clinic.website ? (
           <a href={clinic.website} target="_blank">
             {clinic.website}
