@@ -124,7 +124,7 @@ const fetchSavedClinics = async (req: Request, res: Response) => {
     if (!savedClinics.length) return res.status(200).send({ clinics: [] });
 
     const clinics = await Promise.all(
-      savedClinics.map((id: string) => db.collection("newTestClinics").doc(id).get())
+      savedClinics.map((id: string) => db.collection("vetClinics").doc(id).get())
     );
 
     res.status(200).send({clinics: clinics.filter((clinic) => clinic.exists)
