@@ -10,7 +10,7 @@ const capitalizeFirstLetter = (text: string): string =>
   text.charAt(0).toUpperCase() + text.slice(1);
 
 
-const fetchVeterinaryClinicsByCity = async (
+const fetchVeterinaryClinicsByCoordinates = async (
   location: Coordinates,
   cityName: string
 ): Promise<Clinic[]> => {
@@ -167,7 +167,7 @@ const generateNewClinicsFile = async (locations:any) => {
 
   for (const location of locations) {
     console.log(`Hämtar för plats: ${location.city}`);
-    const newClinics = await fetchVeterinaryClinicsByCity(
+    const newClinics = await fetchVeterinaryClinicsByCoordinates(
       { lat: location.lat, lng: location.lng },
       location.city
     );
