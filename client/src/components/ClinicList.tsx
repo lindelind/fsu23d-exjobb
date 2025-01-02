@@ -46,7 +46,7 @@ export const ClinicList = () => {
           >
             <div>
               <h3>{clinic.name}</h3>
-              <p>{clinic.rating}</p><Rate disabled allowHalf defaultValue={clinic.rating} />
+              <Rate disabled allowHalf defaultValue={clinic.rating} />
               <p>
                 <strong>{t("clinic_address")}:</strong>{" "}
                 <a
@@ -98,8 +98,6 @@ export const ClinicList = () => {
         pageSize={pageSize}
         total={sortedClinics.length}
         onChange={handlePageChange}
-        showSizeChanger
-        onShowSizeChange={handlePageChange}
         style={{ marginTop: "16px", textAlign: "center" }}
       />
     </>
