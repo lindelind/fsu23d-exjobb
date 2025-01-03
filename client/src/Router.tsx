@@ -3,7 +3,7 @@ import LayoutTemplate from "./pages/LayoutTemplate";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
 import { FindVet } from "./pages/FindVet";
-import { PetFirstAid } from "./pages/PetFirstAid";
+// import { PetFirstAid } from "./pages/PetFirstAid";
 import { VetDetailPage } from "./pages/VetDetailPage";
 import { SavedClinics } from "./pages/SavedClinics";
 
