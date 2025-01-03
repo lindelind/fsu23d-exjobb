@@ -33,10 +33,10 @@ export const router = createBrowserRouter([
         path: "/saved-clinics",
         element: <SavedClinics />,
       },
-      {
-        path: "/pet-first-aid",
-        element: <PetFirstAid />,
-      },
+      // {
+      //   path: "/pet-first-aid",
+      //   element: <PetFirstAid />,
+      // },
     ],
   },
 ]);
