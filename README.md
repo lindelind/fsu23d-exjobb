@@ -21,8 +21,8 @@ HittaVet är en användarvänlig webbapplikation som hjälper djurägare att sna
 För att kunna utveckla och köra projektet lokalt, behöver du följande program och verktyg:
 - **Node.js** (minst version 16)
 - **Yarn eller npm** för att hantera beroenden
-- **Firebase CLI** för integration med Firebase
-- **Typesense CLI** för lokal hantering av sökfunktioner
+- **Firebase** för integration med Firebase
+- **Typesense** för lokal hantering av sökfunktioner
 
 ### Installation och start
 
