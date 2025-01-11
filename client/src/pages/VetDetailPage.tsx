@@ -72,7 +72,10 @@ const handleRemoveClinic = async() => {
     message.error(t("clinic_removed_fail"))
   }
 }
+  // const openingHours =
+  //   clinic.openinghours?.[i18n.language] ?? clinic.openinghours?.["sv"] ?? [];
 
+  //change back to the above when the data is changed in firestore on the next fetch.
   const openingHours =
     clinic.openinghours?.[i18n.language].weekday_text ?? clinic.openinghours?.["sv"].weekday_text ?? [];
 
@@ -83,8 +86,7 @@ const handleRemoveClinic = async() => {
       <Button onClick={handleRemoveClinic}>{t("remove_clinic_btn")}</Button>
       <p>
         {(() => {
-          const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
-          const clinicOpen = isClinicOpen(openingHoursCheck);
+           const clinicOpen = isClinicOpen(openingHours);
 
           return (
             <span style={{ color: clinicOpen ? "green" : "red" }}>

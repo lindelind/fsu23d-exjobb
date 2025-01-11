@@ -9,19 +9,20 @@ import EnvironmentOutlined from "@ant-design/icons/lib/icons/EnvironmentOutlined
 export const ClinicList = () => {
   const { clinics, isClinicOpen } = useClinics();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  const sortedClinics = clinics
-    .map((clinic) => {
-    
-      const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
-      isClinicOpen(openingHoursCheck);
-      return { ...clinic, isOpen: isClinicOpen(openingHoursCheck) };
-    })
-    .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));
+   const sortedClinics = clinics
+     .map((clinic) => {
+       const openingHours =
+         clinic.openinghours?.[i18n.language] ??
+         clinic.openinghours?.["sv"] ??
+         [];
+       return { ...clinic, isOpen: isClinicOpen(openingHours) };
+     })
+     .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));
 
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedClinics = sortedClinics.slice(
@@ -53,12 +54,12 @@ export const ClinicList = () => {
                 <strong>
                   <EnvironmentOutlined style={{ fontSize: "20px" }} />
                 </strong>{" "}
-                <a
+                {/* <a
                   href={`https://www.google.com/maps?q=${clinic.coordinates?.lat},${clinic.coordinates?.long}`}
                   target="_blank"
-                >
+                > */}
                   {clinic.formatted_address}
-                </a>
+                {/* </a> */}
               </p>
               <p>
                 <strong>

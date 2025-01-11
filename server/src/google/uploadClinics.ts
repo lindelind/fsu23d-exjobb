@@ -50,10 +50,9 @@ const uploadToTypesense = async (clinics: Clinic[]) => {
           "address.län": clinic.address.län || "",
           "address.country": clinic.address.country || "",
           openinghours: {
-            sv: {
-          periods: clinic.openinghours?.sv?.periods ?? [],
-      },
-    },
+            sv: clinic.openinghours?.sv || [],
+            en: clinic.openinghours?.en || [],
+        },
           rating: clinic.rating || 0,
         })),
         { action: "upsert" }

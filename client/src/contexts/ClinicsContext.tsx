@@ -2,14 +2,15 @@ import axios from "axios";
 import React, { createContext, useCallback, useContext, useState } from "react";
 
 export interface Clinic {
- openinghours?: { [key: string]: {
-    weekday_text: string[];
-    periods?: {
-      close: { day: number; time: string };
-      open: { day: number; time: string };
-    }[];
-  };
-} | null,
+  openinghours?: { [key: string]: string[] }  | null;
+  //  openinghours?: { [key: string]: {
+  //     weekday_text: string[];
+  //     periods?: {
+  //       close: { day: number; time: string };
+  //       open: { day: number; time: string };
+  //     }[];
+  //   };
+  // } | null,
   id: string;
   name: string;
   address: {
@@ -46,14 +47,15 @@ interface ClinicsContextProps {
   fetchById: (id: string) => Promise<void>;
   addReview: (review: Review) => Promise<void>;
   fetchReviews: (clinicId: string) => Promise<void>;
-  isClinicOpen: (
-    openinghours:
-      | {
-          open: { day: number; time: string };
-          close: { day: number; time: string };
-        }[]
-      | null
-  ) => boolean;
+  // isClinicOpen: (
+  //   openinghours:
+  //     | {
+  //         open: { day: number; time: string };
+  //         close: { day: number; time: string };
+  //       }[]
+  //     | null
+  // ) => boolean;
+  isClinicOpen: (openinghours: string[] | null) => boolean;
 
   saveClinic: (id: string, clinicId: string) => Promise<void>;
   removeSavedClinic: (id: string, clinicId: string) => Promise<void>;
@@ -192,49 +194,120 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
 
- const isClinicOpen = (
-   openingHoursPeriods:
-     | {
-         open: { day: number; time: string };
-         close: { day: number; time: string };
-       }[]
-     | null
- ): boolean => {
-   if (!Array.isArray(openingHoursPeriods) || openingHoursPeriods.length === 0) {
-     return false;
-   }
+    const isClinicOpen = (openinghours: string[] | null): boolean => {
+    if (!openinghours?.length) {
+      return false;
+    }
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const currentDay = now
+      .toLocaleDateString("en-US", { weekday: "long" })
+      .toLowerCase();
 
-   const currentDay = new Date().getDay();
-   const currentTime = new Date();
-  const currentTimeString = `${String(currentTime.getHours()).padStart(2, "0")}${String(currentTime.getMinutes()).padStart(2, "0")}`;
+    const days: Record<string, string> = {
+      monday: "måndag",
+      tuesday: "tisdag",
+      wednesday: "onsdag",
+      thursday: "torsdag",
+      friday: "fredag",
+      saturday: "lördag",
+      sunday: "söndag",
+    };
 
-  //Extra koll för att behandla fler format av hur öppetider är sparat gällande öppet dygnet runt eller öppet till midnatt ex.
-  for (let period of openingHoursPeriods) {
-    if (period.open && period.open.time && period.close && period.close.time) {
-      const closeTime =
-        period.close.time === "0000" ? "2400" : period.close.time;
+     const todayHours = openinghours.find((openhours) => {
+      const day = openhours.split(":")[0].toLowerCase();
+      return day === currentDay || day === days[currentDay];
+    });
 
-      if (period.open.day === currentDay) {
-        if (
-          currentTimeString >= period.open.time &&
-          currentTimeString <= closeTime
-        ) {
-          return true; 
-        }
+
+    if (!todayHours) {
+      return false;
+    }
+  
+
+    const timePeriods = todayHours.replace(/^[^:]+:\s*/, "").split(/,\s*/);
+ 
+    const status = timePeriods[0].toLowerCase();
+    if (["closed", "stängt"].includes(status)) {
+      return false;
+    }
+    if (["open 24 hours", "öppet dygnet runt"].includes(status)) {
+      return true;
+    }
+
+       const parseTime = (time: string): { hours: number; minutes: number } => {
+      const timeMatch = time.match(/(\d{1,2}):(\d{2})\s?(AM|PM)?/i);
+      if (!timeMatch) {
+        console.error(`Invalid time format: ${time}`);
+        throw new Error(`Invalid time format: ${time}`);
       }
-      if (period.close.day === currentDay) {
-        if (
-       currentTimeString >= period.open.time &&
-       currentTimeString <= closeTime
-     ) {
-       return true;
-       }
-      }
-     }
-   }
+      let [hours, minutes] = timeMatch.slice(1, 3).map(Number);
+      const period = timeMatch[3]?.toUpperCase();
+      if (period === "PM" && hours !== 12) hours += 12;
+      if (period === "AM" && hours === 12) hours = 0;
+      return { hours, minutes };
+    };
+    const isOpen = timePeriods.some((period) => {
+      const [open, close] = period
+        .split("–")
+        .map((time) => parseTime(time.trim()));
+      
+      if (currentHours > open.hours && currentHours < close.hours) return true;
+      if (currentHours === open.hours && currentMinutes >= open.minutes)
+        return true;
+      if (currentHours === close.hours && currentMinutes <= close.minutes)
+        return true;
+      return false;
+    });
+    return isOpen;
+  };
 
-   return false;
- };
+
+
+//  const isClinicOpen = (
+//    openingHoursPeriods:
+//      | {
+//          open: { day: number; time: string };
+//          close: { day: number; time: string };
+//        }[]
+//      | null
+//  ): boolean => {
+//    if (!Array.isArray(openingHoursPeriods) || openingHoursPeriods.length === 0) {
+//      return false;
+//    }
+
+//    const currentDay = new Date().getDay();
+//    const currentTime = new Date();
+//   const currentTimeString = `${String(currentTime.getHours()).padStart(2, "0")}${String(currentTime.getMinutes()).padStart(2, "0")}`;
+
+//   //Extra koll för att behandla fler format av hur öppetider är sparat gällande öppet dygnet runt eller öppet till midnatt ex.
+//   for (let period of openingHoursPeriods) {
+//     if (period.open && period.open.time && period.close && period.close.time) {
+//       const closeTime =
+//         period.close.time === "0000" ? "2400" : period.close.time;
+
+//       if (period.open.day === currentDay) {
+//         if (
+//           currentTimeString >= period.open.time &&
+//           currentTimeString <= closeTime
+//         ) {
+//           return true; 
+//         }
+//       }
+//       if (period.close.day === currentDay) {
+//         if (
+//        currentTimeString >= period.open.time &&
+//        currentTimeString <= closeTime
+//      ) {
+//        return true;
+//        }
+//       }
+//      }
+//    }
+
+//    return false;
+//  };
 
 
 
