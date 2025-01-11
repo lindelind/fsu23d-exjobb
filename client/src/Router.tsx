@@ -3,9 +3,9 @@ import LayoutTemplate from "./pages/LayoutTemplate";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
 import { FindVet } from "./pages/FindVet";
-// import { PetFirstAid } from "./pages/PetFirstAid";
 import { VetDetailPage } from "./pages/VetDetailPage";
 import { SavedClinics } from "./pages/SavedClinics";
+import { PetFirstAid } from "./pages/PetFirstAid";
 
 export const router = createBrowserRouter([
   {
@@ -33,10 +33,10 @@ export const router = createBrowserRouter([
         path: "/saved-clinics",
         element: <SavedClinics />,
       },
-      // {
-      //   path: "/pet-first-aid",
-      //   element: <PetFirstAid />,
-      // },
+      {
+        path: "/pet-first-aid",
+        element: <PetFirstAid />,
+      },
     ],
   },
 ]);

@@ -56,10 +56,10 @@ export const Navigation = () => {
         },
       ],
     },
-    // {
-    //   key: "/pet-first-aid",
-    //   label: <Link to="/pet-first-aid">{t("petfirstaid")}</Link>,
-    // },
+    user && {
+      key: "/pet-first-aid",
+      label: <Link to="/pet-first-aid">{t("petfirstaid")}</Link>,
+    },
     {
       key: "/change-language",
       label: <ChangeLanguage />,
