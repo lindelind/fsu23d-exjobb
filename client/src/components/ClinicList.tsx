@@ -53,12 +53,12 @@ export const ClinicList = () => {
                 <strong>
                   <EnvironmentOutlined style={{ fontSize: "20px" }} />
                 </strong>{" "}
-                <a
+                {/* <a
                   href={`https://www.google.com/maps?q=${clinic.coordinates?.lat},${clinic.coordinates?.long}`}
                   target="_blank"
-                >
+                > */}
                   {clinic.formatted_address}
-                </a>
+                {/* </a> */}
               </p>
               <p>
                 <strong>
