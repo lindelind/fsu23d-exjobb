@@ -15,7 +15,6 @@ const API_URL =
     ? "https://fsu23d-exjobb.onrender.com/api"
     : "http://localhost:3000/api";
 
-console.log(`API_URL is set to: ${API_URL}`);
 
 interface User {
   id: string;
@@ -72,7 +71,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw new Error("Failed to fetch ID token.");
       }
 
-      console.log("Sending ID token to session-login:", idToken);
 
    await axios.post(
      `${API_URL}/session-login`,

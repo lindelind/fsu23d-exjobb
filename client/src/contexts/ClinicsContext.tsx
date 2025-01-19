@@ -64,7 +64,6 @@ const API_URL =
     ? "https://fsu23d-exjobb.onrender.com/api"
     : "http://localhost:3000/api";
 
-console.log(`API_URL is set to: ${API_URL}`);
 
 
 
@@ -102,11 +101,9 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchByLocation = async (lat: number, long: number, radius: number) => {
     setLoading(true);
     try {
-      console.log("Fetching by location:", { lat, long, radius });
       const response = await axios.get(
         `${API_URL}/vet-clinics-location?lat=${lat}&long=${long}&radius=${radius}`
       );
-      console.log("Response data:", response.data);
 
       const data = response.data;
       setClinics(data.data);
@@ -219,7 +216,6 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
    try {
      setLoading(true);
      const response = await axios.get(`${API_URL}/saved-clinics/${userId}`);
-     console.log("Response data:", response.data);
 
      const data = response.data;
      if (data.clinics) {
@@ -249,10 +245,8 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
          id: userId,
          clinicId,
        });
-       console.log("Clinic removed successfully!");
      } else {
        await axios.post(`${API_URL}/save-clinic`, { id: userId, clinicId });
-       console.log("Clinic saved successfully!");
      }
    } catch (error) {
      console.error(
