@@ -23,6 +23,7 @@ export interface Clinic {
   phone_number: string | null;
   website: string | null;
   rating: number;
+  user_ratings_total: number;
   coordinates?: {
     lat: number;
     long: number;
@@ -54,9 +55,7 @@ interface ClinicsContextProps {
         }[]
       | null
   ) => boolean;
-
-  saveClinic: (id: string, clinicId: string) => Promise<void>;
-  removeSavedClinic: (id: string, clinicId: string) => Promise<void>;
+  toggleFavoriteClinic: (userId: string, clinicId: string, isCurrentlyFavorite: boolean) => Promise<void>
   fetchSavedClinics: (id: string) => Promise<void>;
 }
 
@@ -65,7 +64,6 @@ const API_URL =
     ? "https://fsu23d-exjobb.onrender.com/api"
     : "http://localhost:3000/api";
 
-console.log(`API_URL is set to: ${API_URL}`);
 
 
 
@@ -103,11 +101,9 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchByLocation = async (lat: number, long: number, radius: number) => {
     setLoading(true);
     try {
-      console.log("Fetching by location:", { lat, long, radius });
       const response = await axios.get(
         `${API_URL}/vet-clinics-location?lat=${lat}&long=${long}&radius=${radius}`
       );
-      console.log("Response data:", response.data);
 
       const data = response.data;
       setClinics(data.data);
@@ -170,26 +166,6 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  const fetchSavedClinics = useCallback(async (userId: string) => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${API_URL}/saved-clinics/${userId}`);
-      console.log("Response data:", response.data);
-
-      const data = response.data;
-      if (data.clinics) {
-        setClinics(data.clinics);
-      } else {
-        console.error("No clinics found in response.");
-        setClinics([]);
-      }
-    } catch (error) {
-      console.error("Error fetching saved clinics:", error);
-      setClinics([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
 
  const isClinicOpen = (
@@ -236,33 +212,53 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
    return false;
  };
 
+ const fetchSavedClinics = useCallback(async (userId: string) => {
+   try {
+     setLoading(true);
+     const response = await axios.get(`${API_URL}/saved-clinics/${userId}`);
 
+     const data = response.data;
+     if (data.clinics) {
+       setClinics(data.clinics);
+     } else {
+       console.error("No clinics found in response.");
+       setClinics([]);
+     }
+   } catch (error) {
+     console.error("Error fetching saved clinics:", error);
+     setClinics([]);
+   } finally {
+     setLoading(false);
+   }
+ }, []);
 
+ const toggleFavoriteClinic = async (
+   userId: string,
+   clinicId: string,
+   isCurrentlyFavorite: boolean
+ ) => {
+   try {
+     setLoading(true);
 
-  const saveClinic = async (id: string, clinicId: string) => {
-    try {
-      setLoading(true);
-      await axios.post(`${API_URL}/save-clinic`, { id, clinicId });
-      console.log("Clinic saved successfully!");
-    } catch (error) {
-      console.error("Error saving clinic:", error);
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  };
+     if (isCurrentlyFavorite) {
+       await axios.post(`${API_URL}/remove-saved-clinic`, {
+         id: userId,
+         clinicId,
+       });
+     } else {
+       await axios.post(`${API_URL}/save-clinic`, { id: userId, clinicId });
+     }
+   } catch (error) {
+     console.error(
+       `Error ${isCurrentlyFavorite ? "removing" : "saving"} clinic:`,
+       error
+     );
+     throw error;
+   } finally {
+     setLoading(false);
+   }
+ };
 
-  const removeSavedClinic = async (id: string, clinicId: string) => {
-    try {
-      setLoading(true);
-      await axios.post(`${API_URL}/remove-saved-clinic`, { id, clinicId });
-      console.log("Clinic removed successfully!");
-    } catch (error) {
-      console.error("Error removing clinic:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <ClinicsContext.Provider
@@ -277,9 +273,8 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
         addReview,
         fetchReviews,
         isClinicOpen,
-        saveClinic,
-        fetchSavedClinics, 
-        removeSavedClinic
+        fetchSavedClinics,
+        toggleFavoriteClinic
       }}
     >
       {children}

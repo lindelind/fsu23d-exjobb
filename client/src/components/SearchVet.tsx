@@ -30,7 +30,6 @@ export const SearchVet = () => {
       (position) => {
         const lat = position.coords.latitude;
         const long = position.coords.longitude;
-        console.log("User location:", { lat, long });
         setUserLocation({ lat, long });
         setOpen(true);
       },
@@ -45,7 +44,6 @@ export const SearchVet = () => {
 
   const handleOk = () => {
     if (userLocation) {
-      console.log("Selected radius:", radius);
       fetchByLocation(userLocation.lat, userLocation.long, radius);
       navigate("/find-vet-clinic/");
     }
