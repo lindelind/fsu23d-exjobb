@@ -28,41 +28,40 @@ const fetchExistingClinics = async (collectionName: string) => {
 };
 
 
-const uploadToTypesense = async (clinics: Clinic[]) => {
-  try {
-    await client
-      .collections("vetClinics")
-      .documents()
-      .delete({ filter_by: "" });
-    console.log("Deleted all existing documents in Typesense collection");
+// const uploadToTypesense = async (clinics: Clinic[]) => {
+//   try {
+//     await client
+//       .collections("vetClinics")
+//       .documents()
+//       .delete({ filter_by: "" });
+//     console.log("Deleted all existing documents in Typesense collection");
 
-    await client
-      .collections("vetClinics")
-      .documents()
-      .import(
-        clinics.map((clinic: any) => ({
-          id: clinic.id,
-          name: clinic.name,
-          website: clinic.website,
-          phone_number: clinic.phone_number,
-          formatted_address: clinic.formatted_address,
-          "address.city": clinic.address.city,
-          "address.län": clinic.address.län || "",
-          "address.country": clinic.address.country || "",
-          openinghours: {
-            sv: {
-          periods: clinic.openinghours?.sv?.periods ?? [],
-      },
-    },
-          rating: clinic.rating || 0,
-        })),
-        { action: "upsert" }
-      );
-    console.log("Uploaded clinics to Typesense successfully.");
-  } catch (error) {
-    console.error("Error uploading to Typesense:", error);
-  }
-};
+//     await client
+//       .collections("vetClinics")
+//       .documents()
+//       .import(
+//         clinics.map((clinic: any) => ({
+//           id: clinic.id,
+//           name: clinic.name,
+//           website: clinic.website,
+//           phone_number: clinic.phone_number,
+//           formatted_address: clinic.formatted_address,
+//           "address.city": clinic.address.city,
+//           "address.län": clinic.address.län || "",
+//           "address.country": clinic.address.country || "",
+//           openinghours: {
+//             sv: clinic.openinghours?.sv || [],
+//             en: clinic.openinghours?.en || [],
+//         },
+//           rating: clinic.rating || 0,
+//         })),
+//         { action: "upsert" }
+//       );
+//     console.log("Uploaded clinics to Typesense successfully.");
+//   } catch (error) {
+//     console.error("Error uploading to Typesense:", error);
+//   }
+// };
 
 
 const compareAndUpdateClinics = async (
@@ -122,15 +121,15 @@ const compareAndUpdateClinics = async (
 
 
 const jsonFilePath = path.resolve(__dirname, getCurrentDateFileName()); 
-const collectionName = "vetClinics"; 
+const collectionName = "newVetClinics"; 
 (async () => {
   const newClinics = await compareAndUpdateClinics(
     jsonFilePath,
     collectionName
   );
-  if (newClinics.length > 0) {
-    await uploadToTypesense(newClinics);
-  } else {
-    console.log("Inga kliniker att ladda upp till Typesense.");
-  }
+  // if (newClinics.length > 0) {
+  //   await uploadToTypesense(newClinics);
+  // } else {
+  //   console.log("Inga kliniker att ladda upp till Typesense.");
+  // }
 })();

@@ -124,14 +124,8 @@ const fetchVeterinaryClinicsByCoordinates = async (
             phone_number: detailsSv.international_phone_number || "",
             website: detailsSv.website || "",
             openinghours: {
-              sv: {
-                weekday_text: formattedOpeningHoursSv,
-                periods: openingHoursPeriodsSv,
-              },
-              en: {
-                weekday_text: detailsEn.opening_hours?.weekday_text || null,
-                
-              },
+              sv: formattedOpeningHoursSv,
+              en: detailsEn.opening_hours?.weekday_text || null,
             },
             rating: detailsSv.rating || null,
             user_ratings_total: detailsSv.user_ratings_total || 0,

@@ -14,14 +14,15 @@ export const ClinicList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  const sortedClinics = clinics
-    .map((clinic) => {
-    
-      const openingHoursCheck = clinic.openinghours?.["sv"]?.periods ?? [];
-      isClinicOpen(openingHoursCheck);
-      return { ...clinic, isOpen: isClinicOpen(openingHoursCheck) };
-    })
-    .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));
+   const sortedClinics = clinics
+     .map((clinic) => {
+       const openingHours =
+         clinic.openinghours?.["sv"] ??
+         clinic.openinghours?.["sv"] ??
+         [];
+       return { ...clinic, isOpen: isClinicOpen(openingHours) };
+     })
+     .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));
 
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedClinics = sortedClinics.slice(

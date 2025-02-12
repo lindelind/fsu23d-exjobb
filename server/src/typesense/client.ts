@@ -30,32 +30,11 @@ const schema = {
       nested: [
         {
           name: "sv",
-          type: "object",
-          nested: [
-            {
-              name: "periods",
-              type: "object[]",
-              facet: true,
-              nested: [
-                {
-                  name: "open",
-                  type: "object",
-                  nested: [
-                    { name: "day", type: "int" },
-                    { name: "time", type: "string" },
-                  ],
-                },
-                {
-                  name: "close",
-                  type: "object",
-                  nested: [
-                    { name: "day", type: "int" },
-                    { name: "time", type: "string" },
-                  ],
-                },
-              ],
-            },
-          ],
+          type: "string[]", 
+        },
+        {
+          name: "en",
+          type: "string[]",
         },
       ],
     },
@@ -64,6 +43,7 @@ const schema = {
   default_sorting_field: "rating",
   enable_nested_fields: true,
 };
+
 
 
 

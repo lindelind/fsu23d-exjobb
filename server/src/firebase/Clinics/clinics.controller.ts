@@ -8,23 +8,22 @@ import { client } from "../../typesense/client";
 
 const getVetClinicsByCity = async (req: Request, res: Response) => {
   try {
-   
     let city = req.query.city as string;
     console.log("Received query:", city);
 
+    
     if (city && city.length > 0) {
       city = city.charAt(0).toUpperCase() + city.slice(1);
     }
-
+   
     const [snapshotCity, snapshotName, snapshotLan] = await Promise.all([
-      db.collection("vetClinics").where("address.city", "==", city).get(),
-      await db
+      db.collection("newVetClinics").where("address.city", "==", city).get(),
+      db
       .collection("vetClinics")
       .where("name", ">=", city)
       .where("name", "<=", city + "\uf8ff")
       .get(),
-      db.collection("vetClinics").where("address.län", "==", city).get(),
-     
+      db.collection("newVetClinics").where("address.län", "==", city).get(),
     ]);
 
     const clinicsMap = new Map<string, any>();
@@ -39,20 +38,10 @@ const getVetClinicsByCity = async (req: Request, res: Response) => {
 
     const clinics = Array.from(clinicsMap.values());
 
-    // const snapshot = await db
-    //   .collection("vetClinics")
-    //   .where("address.city", "==", city) 
-    //   .get();
-    // const clinics = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
-    //   id: doc.id,
-    //   ...doc.data(),
-    // }));
-
     res.status(200).json({
       success: true,
       data: clinics,
       total: clinics.length,
-      
     });
   } catch (error: any) {
     console.error("Error fetching vet clinics:", error.message);
@@ -61,14 +50,14 @@ const getVetClinicsByCity = async (req: Request, res: Response) => {
       message: "Failed to fetch vet clinics",
     });
   }
-  
 };
+
 
 const getVetClinicsById = async (req:Request, res: Response) => {
     try{
         const id = req.params.id;
         const snapshot = await db
-        .collection("vetClinics")
+        .collection("newVetClinics")
         .where("id", "==", id)
         .get();
         const clinic = snapshot.docs.map((doc: QueryDocumentSnapshot ) => ({
@@ -123,7 +112,7 @@ const getVetClinicsById = async (req:Request, res: Response) => {
     });
 
 
-     const clinics = db.collection("vetClinics");
+     const clinics = db.collection("newVetClinics");
      const query = clinics
        .where("coordinates.lat", ">=", minLatitude)
        .where("coordinates.lat", "<=", maxLatitude)
