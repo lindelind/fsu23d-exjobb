@@ -61,6 +61,8 @@ export const ClinicList = () => {
                   {clinic.formatted_address}
                 {/* </a> */}
               </p>
+              {clinic.phone_number && (
+                <>
               <p>
                 <strong>
                   <PhoneOutlined style={{ fontSize: "20px" }} />
@@ -72,7 +74,9 @@ export const ClinicList = () => {
                 ) : (
                   t("clinic_info_null")
                 )}
-              </p>
+              </p> </> )}
+               {clinic.website && (
+                <>
               <p>
                 <strong><img src="/website.png" alt="" width={"24px"} /></strong>{" "}
                 {clinic.website ? (
@@ -86,7 +90,7 @@ export const ClinicList = () => {
                 ) : (
                   t("clinic_info_null")
                 )}
-              </p>
+              </p> </> )}
               {clinic.distance && (
                 <p>
                   <strong>

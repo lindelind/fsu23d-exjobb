@@ -1,7 +1,7 @@
 import { useEffect} from "react";
 import { useParams } from "react-router-dom";
 import { Review, useClinics } from "../contexts/ClinicsContext";
-import { Button, Flex, List, message, Spin } from "antd";
+import { Button, Flex, List, message, Rate, Spin } from "antd";
 import { useTranslation } from "react-i18next";
 import { AddReviewsModal } from "../components/AddReviewsModal";
 import { useAuth } from "../contexts/AuthContext";
@@ -10,8 +10,8 @@ import PhoneOutlined from "@ant-design/icons/lib/icons/PhoneOutlined";
 
 export const VetDetailPage = () => {
   const { id } = useParams();
-  const {user} = useAuth();
-  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen, saveClinic, removeSavedClinic } =
+  const {user, setUser} = useAuth();
+  const { clinic, fetchById, loading, addReview, fetchReviews, reviews, isClinicOpen, toggleFavoriteClinic } =
     useClinics();
   const { t, i18n } = useTranslation();
 
@@ -21,6 +21,38 @@ export const VetDetailPage = () => {
       fetchReviews(id);
     }
   }, [id, fetchById, fetchReviews]);
+
+  const toggleFavorite = async () => {
+    if (!user?.id || !clinic?.id) {
+      return message.error(t("clinic_save_fail"));
+    }
+
+    try {
+      const isCurrentlyFavorite = user.savedClinics?.some(
+        (savedClinic) => savedClinic === clinic.id
+      );
+
+      await toggleFavoriteClinic(user.id, clinic.id, isCurrentlyFavorite);
+
+      const updatedSavedClinics = isCurrentlyFavorite
+        ? user.savedClinics.filter((savedClinic) => savedClinic !== clinic.id) // Ta bort klinik
+        : [...(user.savedClinics || []), clinic.id];
+
+      if (setUser) {
+        setUser({
+          ...user,
+          savedClinics: updatedSavedClinics,
+        });
+      }
+
+      message.success(
+        isCurrentlyFavorite ? t("clinic_removed") : t("clinic_saved")
+      );
+    } catch (error) {
+      message.error(t("clinic_save_fail"));
+    }
+  };
+
 
   const submitReview = async (review: Review) => {
     try {
@@ -72,6 +104,7 @@ const handleRemoveClinic = async() => {
     message.error(t("clinic_removed_fail"))
   }
 }
+
   const openingHours =
     clinic.openinghours?.[i18n.language] ?? clinic.openinghours?.["sv"] ?? [];
 
@@ -80,8 +113,17 @@ const handleRemoveClinic = async() => {
   return (
     <div>
       <h2>{clinic.name}</h2>
-      <Button onClick={handleSaveClinic}>{t("save_clinic_btn")}</Button>
-      <Button onClick={handleRemoveClinic}>{t("remove_clinic_btn")}</Button>
+      <Rate disabled allowHalf defaultValue={clinic.rating} />
+      <h3>
+        {t("rating")}: {clinic.rating} / {clinic.user_ratings_total}{" "}
+        {t("reviews")}
+      </h3>
+      <Button onClick={toggleFavorite}>
+        {user?.savedClinics?.some((savedClinic) => savedClinic === clinic.id)
+          ? t("remove_clinic_btn")
+          : t("save_clinic_btn")}
+      </Button>
+
       <p>
         {(() => {
            const clinicOpen = isClinicOpen(isOpen);

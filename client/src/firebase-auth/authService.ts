@@ -13,7 +13,6 @@ const API_URL =
     ? "https://fsu23d-exjobb.onrender.com/api"
     : "http://localhost:3000/api";
 
-console.log(`API_URL is set to: ${API_URL}`);
 
 export const registerUser = async (
   email: string,
@@ -70,14 +69,12 @@ export const fetchIdToken = async () => {
   }
 
   const idToken = await user.getIdToken();
-  console.log("Fetched ID token:", idToken);
   return idToken;
 };
 
 export const logoutUser = async () => {
   try {
     await signOut(auth); // Loggar ut från Firebase Authentication
-    console.log("Successfully logged out from Firebase");
   } catch (error) {
     console.error("Error logging out from Firebase:", error);
     throw error;
