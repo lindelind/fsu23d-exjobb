@@ -6,38 +6,58 @@ import { Clinic } from "../../types/types";
 import { QueryDocumentSnapshot } from "firebase-admin/firestore";
 import { client } from "../../typesense/client";
 
-// const getVetClinicsByCity = async (req: Request, res: Response) => {
-//   try {
-//     const city = req.query.city;
+const getVetClinicsByCity = async (req: Request, res: Response) => {
+  try {
+    let city = req.query.city as string;
+    console.log("Received query:", city);
 
-//     const snapshot = await db
-//       .collection("vetClinics")
-//       .where("address.city", "==", city)
-//       .get();
-//     const clinics = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
-//       id: doc.id,
-//       ...doc.data(),
-//     }));
+    
+    if (city && city.length > 0) {
+      city = city.charAt(0).toUpperCase() + city.slice(1);
+    }
+   
+    const [snapshotCity, snapshotName, snapshotLan] = await Promise.all([
+      db.collection("newVetClinics").where("address.city", "==", city).get(),
+      db
+      .collection("vetClinics")
+      .where("name", ">=", city)
+      .where("name", "<=", city + "\uf8ff")
+      .get(),
+      db.collection("newVetClinics").where("address.län", "==", city).get(),
+    ]);
 
-//     res.status(200).json({
-//       success: true,
-//       data: clinics,
-//       total: clinics.length,
-//     });
-//   } catch (error: any) {
-//     console.error("Error fetching vet clinics:", error.message);
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to fetch vet clinics",
-//     });
-//   }
-// };
+    const clinicsMap = new Map<string, any>();
+
+    [snapshotCity, snapshotName, snapshotLan].forEach((snapshot) => {
+      snapshot.docs.forEach((doc:any) => {
+        if (!clinicsMap.has(doc.id)) {
+          clinicsMap.set(doc.id, { id: doc.id, ...doc.data() });
+        }
+      });
+    });
+
+    const clinics = Array.from(clinicsMap.values());
+
+    res.status(200).json({
+      success: true,
+      data: clinics,
+      total: clinics.length,
+    });
+  } catch (error: any) {
+    console.error("Error fetching vet clinics:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch vet clinics",
+    });
+  }
+};
+
 
 const getVetClinicsById = async (req:Request, res: Response) => {
     try{
         const id = req.params.id;
         const snapshot = await db
-        .collection("vetClinics")
+        .collection("newVetClinics")
         .where("id", "==", id)
         .get();
         const clinic = snapshot.docs.map((doc: QueryDocumentSnapshot ) => ({
@@ -92,7 +112,7 @@ const getVetClinicsById = async (req:Request, res: Response) => {
     });
 
 
-     const clinics = db.collection("vetClinics");
+     const clinics = db.collection("newVetClinics");
      const query = clinics
        .where("coordinates.lat", ">=", minLatitude)
        .where("coordinates.lat", "<=", maxLatitude)
@@ -129,52 +149,54 @@ const getVetClinicsById = async (req:Request, res: Response) => {
    }
  };
 
-const getVetClinicsByWildSearch = async (req: Request, res: Response) => {
-  try {
-    const query = req.query.city as string;
-    const page = parseInt(req.query.page as string) || 1; 
-    const perPage = parseInt(req.query.perPage as string) || 30
-    console.log("Received query:", query);
+// const getVetClinicsByWildSearch = async (req: Request, res: Response) => {
+//   try {
+//     const query = req.query.city as string;
+//     const page = parseInt(req.query.page as string) || 1; 
+//     const perPage = parseInt(req.query.perPage as string) || 30
+//     console.log("Received query:", query);
 
-    console.log("Connecting to Typesense...");
-    const typesenseResult = await client
-      .collections("vetClinics")
-      .documents()
-      .search({
-        q: query,
-        query_by: "address.city, name, address.län",
-        page,
-        per_page: perPage,
-      });
+//     console.log("Connecting to Typesense...");
+//     const typesenseResult = await client
+//       .collections("vetClinics")
+//       .documents()
+//       .search({
+//         q: query,
+//         query_by: "address.city, name, address.län",
+//         page,
+//         per_page: perPage,
+//       });
 
-    console.log("Typesense result:", typesenseResult);
+//     console.log("Typesense result:", typesenseResult);
 
-    if (typesenseResult.hits.length > 0) {
-      const clinics = typesenseResult.hits.map((hit: any) => hit.document);
+//     if (typesenseResult.hits.length > 0) {
+//       const clinics = typesenseResult.hits.map((hit: any) => hit.document);
 
-      res.status(200).json({
-        success: true,
-        data: clinics,
-        total: clinics.length,
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: "No clinics found matching your query",
-      });
-    }
-  } catch (error: any) {
-    console.error("Error fetching vet clinics:", error.message);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch vet clinics",
-      details: error.message,
-    });
-  }
-};
+//       res.status(200).json({
+//         success: true,
+//         data: clinics,
+//         total: clinics.length,
+//       });
+//     } else {
+//       res.status(404).json({
+//         success: false,
+//         message: "No clinics found matching your query",
+//       });
+//     }
+//   } catch (error: any) {
+//     console.error("Error fetching vet clinics:", error.message);
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to fetch vet clinics",
+//       details: error.message,
+//     });
+//   }
+// };
 
 
 export { 
-  // getVetClinicsByCity,
-   getVetClinicsById , getVetClinicsByLocation, getVetClinicsByWildSearch};
+  getVetClinicsByCity,
+   getVetClinicsById , getVetClinicsByLocation, 
+  //  getVetClinicsByWildSearch
+  };
 

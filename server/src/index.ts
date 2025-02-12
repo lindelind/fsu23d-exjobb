@@ -63,31 +63,31 @@ app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
 
 //Cronjobb to fetch and uploadclinics varannan månad
-cron.schedule(
-  "0 13 2 */2 *",
-  () => {
-    console.log("Starting fetchClinics...");
-    exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
-      if (error) {
-        console.error("Error during fetchClinics:", error);
-        return;
-      }
-      console.log("fetchClinics completed:", result);
+// cron.schedule(
+//   "0 13 2 */2 *",
+//   () => {
+//     console.log("Starting fetchClinics...");
+//     exec("npx ts-node ./src/google/fetchClinics.ts", (error, result) => {
+//       if (error) {
+//         console.error("Error during fetchClinics:", error);
+//         return;
+//       }
+//       console.log("fetchClinics completed:", result);
 
-      console.log("Starting uploadClinics...");
-      exec(
-        "npx ts-node ./src/google/uploadClinics.ts",
-        (uploadError: any, uploadResult: any) => {
-          if (uploadError) {
-            console.error("Error during uploadClinics:", uploadError);
-            return;
-          }
-          console.log("uploadClinics completed:", uploadResult);
-        }
-      );
-    });
-  },
-);
+//       console.log("Starting uploadClinics...");
+//       exec(
+//         "npx ts-node ./src/google/uploadClinics.ts",
+//         (uploadError: any, uploadResult: any) => {
+//           if (uploadError) {
+//             console.error("Error during uploadClinics:", uploadError);
+//             return;
+//           }
+//           console.log("uploadClinics completed:", uploadResult);
+//         }
+//       );
+//     });
+//   },
+// );
 
 
 
