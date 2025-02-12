@@ -12,7 +12,7 @@ export const SavedClinics = () => {
   const { clinics, fetchSavedClinics, loading, isClinicOpen } = useClinics();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (user?.id) {
@@ -39,9 +39,7 @@ export const SavedClinics = () => {
   const sortedClinics = clinics
     .map((clinic) => {
       const openingHours =
-        clinic.openinghours?.[i18n.language] ??
-        clinic.openinghours?.["sv"] ??
-        [];
+        clinic.openinghours?.["sv"] ?? clinic.openinghours?.["sv"] ?? [];
       return { ...clinic, isOpen: isClinicOpen(openingHours) };
     })
     .sort((a, b) => Number(b.isOpen) - Number(a.isOpen));

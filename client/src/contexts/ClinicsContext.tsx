@@ -41,8 +41,6 @@ interface ClinicsContextProps {
   addReview: (review: Review) => Promise<void>;
   fetchReviews: (clinicId: string) => Promise<void>;
   isClinicOpen: (openinghours: string[] | null) => boolean;
-  saveClinic: (id: string, clinicId: string) => Promise<void>;
-  removeSavedClinic: (id: string, clinicId: string) => Promise<void>;
   toggleFavoriteClinic: (userId: string, clinicId: string, isCurrentlyFavorite: boolean) => Promise<void>
   fetchSavedClinics: (id: string) => Promise<void>;
 }
