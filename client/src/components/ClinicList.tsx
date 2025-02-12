@@ -9,7 +9,7 @@ import EnvironmentOutlined from "@ant-design/icons/lib/icons/EnvironmentOutlined
 export const ClinicList = () => {
   const { clinics, isClinicOpen } = useClinics();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -17,7 +17,7 @@ export const ClinicList = () => {
    const sortedClinics = clinics
      .map((clinic) => {
        const openingHours =
-         clinic.openinghours?.[i18n.language] ??
+         clinic.openinghours?.["sv"] ??
          clinic.openinghours?.["sv"] ??
          [];
        return { ...clinic, isOpen: isClinicOpen(openingHours) };

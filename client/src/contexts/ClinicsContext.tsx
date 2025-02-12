@@ -3,14 +3,6 @@ import React, { createContext, useCallback, useContext, useState } from "react";
 
 export interface Clinic {
   openinghours?: { [key: string]: string[] }  | null;
-  //  openinghours?: { [key: string]: {
-  //     weekday_text: string[];
-  //     periods?: {
-  //       close: { day: number; time: string };
-  //       open: { day: number; time: string };
-  //     }[];
-  //   };
-  // } | null,
   id: string;
   name: string;
   address: {
@@ -248,6 +240,7 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
       if (period === "AM" && hours === 12) hours = 0;
       return { hours, minutes };
     };
+    
     const isOpen = timePeriods.some((period) => {
       const [open, close] = period
         .split("–")
@@ -262,52 +255,6 @@ export const ClinicsProvider: React.FC<{ children: React.ReactNode }> = ({
     });
     return isOpen;
   };
-
-
-
-//  const isClinicOpen = (
-//    openingHoursPeriods:
-//      | {
-//          open: { day: number; time: string };
-//          close: { day: number; time: string };
-//        }[]
-//      | null
-//  ): boolean => {
-//    if (!Array.isArray(openingHoursPeriods) || openingHoursPeriods.length === 0) {
-//      return false;
-//    }
-
-//    const currentDay = new Date().getDay();
-//    const currentTime = new Date();
-//   const currentTimeString = `${String(currentTime.getHours()).padStart(2, "0")}${String(currentTime.getMinutes()).padStart(2, "0")}`;
-
-//   //Extra koll för att behandla fler format av hur öppetider är sparat gällande öppet dygnet runt eller öppet till midnatt ex.
-//   for (let period of openingHoursPeriods) {
-//     if (period.open && period.open.time && period.close && period.close.time) {
-//       const closeTime =
-//         period.close.time === "0000" ? "2400" : period.close.time;
-
-//       if (period.open.day === currentDay) {
-//         if (
-//           currentTimeString >= period.open.time &&
-//           currentTimeString <= closeTime
-//         ) {
-//           return true; 
-//         }
-//       }
-//       if (period.close.day === currentDay) {
-//         if (
-//        currentTimeString >= period.open.time &&
-//        currentTimeString <= closeTime
-//      ) {
-//        return true;
-//        }
-//       }
-//      }
-//    }
-
-//    return false;
-//  };
 
 
 
