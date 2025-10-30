@@ -1,11 +1,16 @@
 
 import express from "express";
+import dotenv from "dotenv";
+
+// Load environment variables from server/.env when present
+dotenv.config();
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import petFirstAidRouter from "./firebase/Pet First Aid/petFirstAid.router";
 import usersRouter from "./firebase/Users/users.router";
 import clinicsRouter from "./firebase/Clinics/clinics.router";
 import reviewRoutes from "./firebase/Reviews/reviews.router";
+import chatkitRouter from "./chatkit/chatkit.router";
 import { exec } from "child_process";
 const cron = require("node-cron");
 
@@ -15,7 +20,7 @@ const app = express();
 const allowedOrigins =
   process.env.NODE_ENV === "production"
     ? ["https://hittavet-c3cf4.web.app"] // Produktion
-    : ["http://localhost:5173"]; // Utveckling
+  : ["http://localhost:5175", "http://localhost:5173"]; // Utveckling (Vite)
 
 app.use(express.json());
 app.use(cookieParser());
@@ -61,6 +66,7 @@ app.use("/api", petFirstAidRouter);
 app.use("/api", usersRouter);
 app.use("/api", clinicsRouter);
 app.use("/api", reviewRoutes);
+app.use("/api", chatkitRouter);
 
 //Cronjobb to fetch and uploadclinics varannan månad
 // cron.schedule(
